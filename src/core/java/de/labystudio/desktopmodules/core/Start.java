@@ -1,7 +1,5 @@
 package de.labystudio.desktopmodules.core;
 
-import de.labystudio.desktopmodules.core.DesktopModules;
-
 import javax.swing.*;
 import java.net.URL;
 import java.net.URLClassLoader;

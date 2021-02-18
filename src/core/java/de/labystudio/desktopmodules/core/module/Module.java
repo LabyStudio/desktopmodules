@@ -1,8 +1,12 @@
-package de.labystudio.desktopmodules.core.addon;
+package de.labystudio.desktopmodules.core.module;
 
-import de.labystudio.desktopmodules.core.renderer.wrapper.IModuleRenderer;
-import de.labystudio.desktopmodules.core.renderer.wrapper.IRenderCallback;
-import de.labystudio.desktopmodules.core.renderer.wrapper.IScreenBounds;
+import de.labystudio.desktopmodules.core.addon.Addon;
+import de.labystudio.desktopmodules.core.loader.TextureLoader;
+import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
+import de.labystudio.desktopmodules.core.module.wrapper.IRenderCallback;
+import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
+
+import java.awt.image.BufferedImage;
 
 /**
  * @author LabyStudio
@@ -34,15 +38,51 @@ public abstract class Module implements IRenderCallback {
      */
     private boolean dragging = false;
 
-    public abstract void loadTextures(Addon addon);
+    /**
+     * Module enabled/visible
+     */
+    private boolean enabled;
+
+    /**
+     * The icon of the module
+     */
+    private BufferedImage icon;
+
+    /**
+     * Load all texture of this module
+     *
+     * @param textureLoader Texture loader to load the texture
+     */
+    public abstract void loadTextures(TextureLoader textureLoader);
 
     /**
      * Called on first class load.
      * Override this method instead of creating a constructor
      */
-    public void onInitialize(Addon addon) {
+    public void onInitialize(Addon addon, boolean enabled) {
         this.addon = addon;
-        this.moduleRenderer = createRenderer();
+        this.icon = addon.getDesktopModules().getTextureLoader().loadTexture(getIconPath());
+
+        // Create a module renderer
+        setEnabled(enabled);
+    }
+
+    /**
+     * Create the module renderer or destroy it
+     *
+     * @param enabled New module visible state
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+
+        if (enabled) {
+            // Create module renderer
+            this.moduleRenderer = createRenderer();
+        } else if (this.moduleRenderer != null) {
+            // Close the window
+            this.moduleRenderer.close();
+            this.moduleRenderer = null;
+        }
     }
 
     /**
@@ -51,6 +91,20 @@ public abstract class Module implements IRenderCallback {
      * @return The created implementation for the model render interface
      */
     protected abstract IModuleRenderer createRenderer();
+
+    /**
+     * Get the path to the icon of the module
+     *
+     * @return Resource path of the module icon
+     */
+    protected abstract String getIconPath();
+
+    /**
+     * Get display name of the module
+     *
+     * @return Module name for the settings gui
+     */
+    public abstract String getDisplayName();
 
     /**
      * Called on each application tick
@@ -100,5 +154,17 @@ public abstract class Module implements IRenderCallback {
     @Override
     public void onMouseReleased(int x, int y, int mouseButton) {
         this.dragging = false;
+    }
+
+    public Addon getAddon() {
+        return this.addon;
+    }
+
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public BufferedImage getIcon() {
+        return this.icon;
     }
 }

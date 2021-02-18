@@ -1,9 +1,9 @@
 package de.labystudio.desktopmodules.core.renderer.swing;
 
-import de.labystudio.desktopmodules.core.renderer.wrapper.IModuleRenderer;
-import de.labystudio.desktopmodules.core.renderer.wrapper.IRenderCallback;
-import de.labystudio.desktopmodules.core.renderer.wrapper.IRenderContext;
-import de.labystudio.desktopmodules.core.renderer.wrapper.IScreenBounds;
+import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
+import de.labystudio.desktopmodules.core.module.wrapper.IRenderCallback;
+import de.labystudio.desktopmodules.core.renderer.IRenderContext;
+import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,6 +72,11 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
     @Override
     public void requestFrame() {
         repaint();
+    }
+
+    @Override
+    public void close() {
+        dispose();
     }
 
     @Override

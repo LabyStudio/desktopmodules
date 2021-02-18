@@ -1,4 +1,6 @@
-package de.labystudio.desktopmodules.core.renderer.wrapper;
+package de.labystudio.desktopmodules.core.module.wrapper;
+
+import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
 /**
  * Module renderer interface
@@ -11,6 +13,11 @@ public interface IModuleRenderer {
      * Request a new render frame
      */
     void requestFrame();
+
+    /**
+     * Close the window
+     */
+    void close();
 
     /**
      * Get absolute module x position
@@ -50,6 +57,7 @@ public interface IModuleRenderer {
 
     /**
      * Get the total bounds of all monitors
+     *
      * @return Entire display bounds
      */
     IScreenBounds getScreenBounds();

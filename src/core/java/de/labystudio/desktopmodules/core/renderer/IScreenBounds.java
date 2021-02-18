@@ -1,4 +1,4 @@
-package de.labystudio.desktopmodules.core.renderer.wrapper;
+package de.labystudio.desktopmodules.core.renderer;
 
 /**
  * Screen bounds wrapper

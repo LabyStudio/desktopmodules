@@ -1,9 +1,9 @@
 package de.labystudio.desktopmodules.core.renderer.swing;
 
-import de.labystudio.desktopmodules.core.renderer.wrapper.IRenderContext;
-import de.labystudio.desktopmodules.core.renderer.wrapper.font.Font;
-import de.labystudio.desktopmodules.core.renderer.wrapper.font.StringAlignment;
-import de.labystudio.desktopmodules.core.renderer.wrapper.font.StringEffect;
+import de.labystudio.desktopmodules.core.renderer.IRenderContext;
+import de.labystudio.desktopmodules.core.renderer.font.Font;
+import de.labystudio.desktopmodules.core.renderer.font.StringAlignment;
+import de.labystudio.desktopmodules.core.renderer.font.StringEffect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -68,5 +68,10 @@ public class SwingRenderContext implements IRenderContext {
     @Override
     public void drawImage(BufferedImage image, int x, int y) {
         this.graphics.drawImage(image, x, y, null);
+    }
+
+    @Override
+    public void drawImage(BufferedImage image, int x, int y, int width, int height) {
+        this.graphics.drawImage(image, x, y, width, height, null, null);
     }
 }

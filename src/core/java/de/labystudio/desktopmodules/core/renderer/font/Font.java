@@ -1,4 +1,4 @@
-package de.labystudio.desktopmodules.core.renderer.wrapper.font;
+package de.labystudio.desktopmodules.core.renderer.font;
 
 /**
  * Font wrapper

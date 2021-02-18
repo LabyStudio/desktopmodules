@@ -1,6 +1,6 @@
 package de.labystudio.desktopmodules.core.renderer.swing;
 
-import de.labystudio.desktopmodules.core.renderer.wrapper.IScreenBounds;
+import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
 import java.awt.*;
 

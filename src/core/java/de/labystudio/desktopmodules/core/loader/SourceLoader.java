@@ -3,8 +3,9 @@ package de.labystudio.desktopmodules.core.loader;
 import com.google.gson.Gson;
 import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.addon.Addon;
-import de.labystudio.desktopmodules.core.addon.AddonData;
-import de.labystudio.desktopmodules.core.addon.Module;
+import de.labystudio.desktopmodules.core.loader.model.LoadableAddon;
+import de.labystudio.desktopmodules.core.loader.model.ModelAddonData;
+import de.labystudio.desktopmodules.core.module.Module;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,7 +44,7 @@ public class SourceLoader {
             // Load test addon
             InputStream testAddonJsonInput = this.desktopModules.getClassLoader().getResourceAsStream("addon.json");
             if (testAddonJsonInput != null) {
-                LoadableAddon loadableAddon = new LoadableAddon(null, GSON.fromJson(new InputStreamReader(testAddonJsonInput), AddonData.class));
+                LoadableAddon loadableAddon = new LoadableAddon(null, GSON.fromJson(new InputStreamReader(testAddonJsonInput), ModelAddonData.class));
                 loadableAddons.add(loadableAddon);
                 testAddonJsonInput.close();
             }
@@ -63,14 +64,14 @@ public class SourceLoader {
      */
     public Addon loadAddon(LoadableAddon loadableAddon) throws Exception {
         // Load class of the addon
-        String mainClassName = loadableAddon.getAddonData().main;
+        String mainClassName = loadableAddon.getMainClass();
         Class<? extends Addon> clazz = (Class<? extends Addon>) this.desktopModules.getClassLoader().loadClass(mainClassName);
 
         // Create instance of the addon
         Addon addon = load(clazz);
 
         // Initialize the addon
-        addon.onInitialize(this.desktopModules, loadableAddon.getAddonData());
+        addon.onInitialize(this.desktopModules);
 
         // Enable the addon
         addon.onEnable();
@@ -93,9 +94,12 @@ public class SourceLoader {
         // Create instance of the module
         Module module = load(moduleClass);
 
+        // TODO Read config value
+        boolean enabled = true;
+
         // Initialize the module
-        module.loadTextures(addon);
-        module.onInitialize(addon);
+        module.loadTextures(this.desktopModules.getTextureLoader());
+        module.onInitialize(addon, enabled);
 
         // Register the module
         this.modules.add(module);
@@ -123,5 +127,9 @@ public class SourceLoader {
      */
     public List<Module> getModules() {
         return modules;
+    }
+
+    public List<Addon> getAddons() {
+        return addons;
     }
 }

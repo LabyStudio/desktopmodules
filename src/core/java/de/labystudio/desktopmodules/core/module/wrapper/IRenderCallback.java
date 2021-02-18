@@ -1,4 +1,6 @@
-package de.labystudio.desktopmodules.core.renderer.wrapper;
+package de.labystudio.desktopmodules.core.module.wrapper;
+
+import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 
 /**
  * Callback from the module renderer for each render tick

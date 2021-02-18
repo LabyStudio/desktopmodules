@@ -1,8 +1,8 @@
-package de.labystudio.desktopmodules.core.renderer.wrapper;
+package de.labystudio.desktopmodules.core.renderer;
 
-import de.labystudio.desktopmodules.core.renderer.wrapper.font.Font;
-import de.labystudio.desktopmodules.core.renderer.wrapper.font.StringAlignment;
-import de.labystudio.desktopmodules.core.renderer.wrapper.font.StringEffect;
+import de.labystudio.desktopmodules.core.renderer.font.Font;
+import de.labystudio.desktopmodules.core.renderer.font.StringAlignment;
+import de.labystudio.desktopmodules.core.renderer.font.StringEffect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -61,4 +61,16 @@ public interface IRenderContext {
      * @param y     Y position relative to the module position
      */
     void drawImage(BufferedImage image, int x, int y);
+
+
+    /**
+     * Render an image at the given position
+     *
+     * @param image  BufferedImage to render
+     * @param x      X position relative to the module position
+     * @param y      Y position relative to the module position
+     * @param width  Image width
+     * @param height Image height
+     */
+    void drawImage(BufferedImage image, int x, int y, int width, int height);
 }
