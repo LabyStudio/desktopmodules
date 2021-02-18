@@ -5,6 +5,11 @@ plugins {
 group 'de.labystudio'
 version '1.0-SNAPSHOT'
 
+compileJava   {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
 repositories {
     mavenCentral()
 }
