@@ -28,7 +28,7 @@ public class SampleModule extends Module {
 
     @Override
     public void loadTextures(Addon addon) {
-        this.sampleTexture = addon.loadTexture("textures/sample.png");
+        this.sampleTexture = addon.loadTexture("textures/sample/sample.png");
     }
 
     @Override
