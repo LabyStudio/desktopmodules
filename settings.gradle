@@ -1,0 +1,3 @@
+rootProject.name = 'desktopmodules-core'
+
+include 'sample'

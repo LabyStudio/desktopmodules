@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'de.labystudio'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.8.6'
+}
+
+sourceSets.main.java.srcDirs = ["src/core/java", "src/sample/java"]
+sourceSets.main.resources.srcDirs = ["src/core/resources", "src/sample/resources"]
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.labystudio.desktopmodules.core.main.Start'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
