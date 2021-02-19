@@ -19,11 +19,15 @@ import java.awt.event.MouseMotionListener;
  */
 public class SwingModuleRenderer extends JDialog implements IModuleRenderer, MouseListener, MouseMotionListener {
 
+    private static final long TO_FONT_PERIOD_MS = 1000 * 3;
+
     protected final int width;
     protected final int height;
 
     protected final IRenderContext renderContext = new SwingRenderContext();
     private final IRenderCallback renderCallback;
+
+    private long lastToFontCall = -1L;
 
     /**
      * Create new swing module renderer
@@ -72,6 +76,14 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
     @Override
     public void requestFrame() {
         repaint();
+
+        // The window will no longer be on top of you click on the taskbar
+        if (this.lastToFontCall + TO_FONT_PERIOD_MS < System.currentTimeMillis()) {
+            this.lastToFontCall = System.currentTimeMillis();
+
+            // Keep it over the taskbar
+            toFront();
+        }
     }
 
     @Override

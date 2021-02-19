@@ -25,6 +25,8 @@ public class SwingRenderContext implements IRenderContext {
      */
     public void updateGraphics(Graphics2D graphics) {
         this.graphics = graphics;
+
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
 

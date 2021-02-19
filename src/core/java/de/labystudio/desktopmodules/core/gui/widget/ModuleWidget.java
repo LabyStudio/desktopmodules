@@ -53,6 +53,7 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
         int iconPadding = 5;
 
         // Smooth rendering
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Draw module icon

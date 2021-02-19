@@ -37,6 +37,13 @@ public class TrayHandler implements MouseListener {
 
         // Register system tray
         this.trayIcon = new TrayIcon(trayImage);
+    }
+
+    /**
+     * Add the try to the system and fill the menu
+     * @throws Exception Can throw an exception when adding to the system tray
+     */
+    public void init() throws Exception {
         this.trayIcon.addMouseListener(this);
         SystemTray.getSystemTray().add(this.trayIcon);
 

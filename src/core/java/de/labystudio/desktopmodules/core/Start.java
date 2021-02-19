@@ -25,7 +25,14 @@ public class Start {
         // Set system look
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        new DesktopModules(classLoader).init();
+        // Create and initialize application
+        DesktopModules desktopModules = new DesktopModules(classLoader);
+        desktopModules.init();
+
+        // Load internal addon
+        if (args.length != 0) {
+            desktopModules.getSourceLoader().loadInternalAddonAsync(args[0]);
+        }
     }
 
 

@@ -1,14 +1,14 @@
 package de.labystudio.desktopmodules.core;
 
+import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.SourceLoader;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
-import de.labystudio.desktopmodules.core.loader.model.LoadableAddon;
 import de.labystudio.desktopmodules.core.module.Module;
 import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
 import de.labystudio.desktopmodules.core.tray.TrayHandler;
 
+import java.io.File;
 import java.net.URLClassLoader;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -23,11 +23,10 @@ public class DesktopModules {
 
     private final URLClassLoader classLoader;
 
-    private final ExecutorService executorService = Executors.newFixedThreadPool(5);
-    private final SourceLoader sourceLoader = new SourceLoader(this);
-    private final TextureLoader textureLoader = new TextureLoader(this);
+    private final File workingDirectory = new File(System.getenv("APPDATA") + "/DesktopModules");
 
-    private final TrayHandler trayHandler;
+    private final SourceLoader sourceLoader = new SourceLoader(this, this.workingDirectory);
+    private final TextureLoader textureLoader = new TextureLoader(this);
 
     /**
      * Create an instance of the DesktopModules application and load all addons using the given classloader
@@ -36,14 +35,24 @@ public class DesktopModules {
      */
     public DesktopModules(URLClassLoader classLoader) throws Exception {
         this.classLoader = classLoader;
-        this.trayHandler = new TrayHandler(this);
+
+        // Create working directory
+        if (!this.workingDirectory.exists()) {
+            this.workingDirectory.mkdir();
+
+            this.sourceLoader.setupDirectory();
+        }
+
+        // Add system tray
+        new TrayHandler(this).init();
     }
 
     /**
      * Initialize the application
      */
     public void init() {
-        loadAddons();
+        // Load all addons
+        this.sourceLoader.loadAddonsInDirectoryAsync();
 
         // Start render thread
         Executors.newScheduledThreadPool(1)
@@ -74,27 +83,18 @@ public class DesktopModules {
     }
 
     /**
-     * Load all addons
-     */
-    public void loadAddons() {
-        // Load all addons
-        for (LoadableAddon loadableAddon : this.sourceLoader.find()) {
-
-            // Async addon loading
-            this.executorService.execute(() -> {
-                try {
-                    this.sourceLoader.loadAddon(loadableAddon);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-    }
-
-    /**
      * Shutdown the application
      */
     public void shutdown() {
+        // Disable all addons
+        for (Addon addon : this.sourceLoader.getAddons()) {
+            try {
+                addon.onDisable();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         System.exit(0);
     }
 
