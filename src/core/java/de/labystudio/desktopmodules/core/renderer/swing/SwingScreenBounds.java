@@ -14,7 +14,7 @@ public class SwingScreenBounds implements IScreenBounds {
     private int minX, minY, maxX, maxY;
 
     /**
-     * Create screen bounds
+     * Create screen bounds of all monitors
      */
     public SwingScreenBounds() {
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -27,6 +27,34 @@ public class SwingScreenBounds implements IScreenBounds {
             this.minY = Math.min(this.minY, bounds.y);
             this.maxX = Math.max(this.maxX, bounds.x + bounds.width);
             this.maxY = Math.max(this.maxY, bounds.y + bounds.height);
+        }
+    }
+
+    /**
+     * Create screen bounds of the target monitor
+     *
+     * @param x Target x position over all monitors
+     * @param y Target y position over all monitors
+     */
+    public SwingScreenBounds(int x, int y) {
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+        // Find target monitor
+        for (GraphicsDevice device : environment.getScreenDevices()) {
+            Rectangle bounds = device.getDefaultConfiguration().getBounds();
+
+            // Is position inside of the monitor
+            if (!(x > bounds.x && x < bounds.x + bounds.width && y > bounds.y && y < bounds.y + bounds.height)) {
+                continue;
+            }
+
+            // Store bounds
+            this.minX = bounds.x;
+            this.minY = bounds.y;
+            this.maxX = bounds.x + bounds.width - bounds.x;
+            this.maxY = bounds.y + bounds.height - bounds.y;
+
+            break;
         }
     }
 

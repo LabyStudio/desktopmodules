@@ -61,4 +61,11 @@ public interface IModuleRenderer {
      * @return Entire display bounds
      */
     IScreenBounds getScreenBounds();
+
+    /**
+     * Get the bounds of the target monitor where the module is in
+     *
+     * @return Target monitor bounds
+     */
+    IScreenBounds getScreenBoundsOfTargetMonitor();
 }

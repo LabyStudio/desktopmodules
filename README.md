@@ -57,7 +57,6 @@ import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
 import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
 import de.labystudio.desktopmodules.core.renderer.IRenderContext;
-import de.labystudio.desktopmodules.core.renderer.swing.SwingModuleRenderer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -66,16 +65,15 @@ public class TestModule extends Module {
     
     private BufferedImage testTexture;
 
+    public TestModule() {
+        super(250, 60); // The fixed size of the module
+    }
+    
     @Override
     public void loadTextures(TextureLoader textureLoader) {
         this.testTexture = textureLoader.loadTexture("textures/test/test.png"); // Load a texture
     }
-
-    @Override
-    protected IModuleRenderer createRenderer() {
-        return new SwingModuleRenderer(this, 250, 60); // The fixed size of the module
-    }
-
+    
     @Override
     protected String getIconPath() {
         return "textures/test/test.png"; // The settings icon of the module

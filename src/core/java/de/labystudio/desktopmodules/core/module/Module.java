@@ -5,6 +5,7 @@ import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
 import de.labystudio.desktopmodules.core.module.wrapper.IRenderCallback;
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
+import de.labystudio.desktopmodules.core.renderer.swing.SwingModuleRenderer;
 
 import java.awt.image.BufferedImage;
 
@@ -12,6 +13,9 @@ import java.awt.image.BufferedImage;
  * @author LabyStudio
  */
 public abstract class Module implements IRenderCallback {
+
+    private final int width;
+    private final int height;
 
     /**
      * The render instance of this module
@@ -49,6 +53,17 @@ public abstract class Module implements IRenderCallback {
     private BufferedImage icon;
 
     /**
+     * Create module width fixed size
+     *
+     * @param width  Module width
+     * @param height Module height
+     */
+    public Module(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    /**
      * Load all texture of this module
      *
      * @param textureLoader Texture loader to load the texture
@@ -71,7 +86,9 @@ public abstract class Module implements IRenderCallback {
      *
      * @return The created implementation for the model render interface
      */
-    protected abstract IModuleRenderer createRenderer();
+    protected IModuleRenderer createRenderer() {
+        return new SwingModuleRenderer(this, this.width, this.height);
+    }
 
     /**
      * Get the path to the icon of the module

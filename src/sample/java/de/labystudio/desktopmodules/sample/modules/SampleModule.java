@@ -3,9 +3,7 @@ package de.labystudio.desktopmodules.sample.modules;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
-import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
 import de.labystudio.desktopmodules.core.renderer.IRenderContext;
-import de.labystudio.desktopmodules.core.renderer.swing.SwingModuleRenderer;
 import de.labystudio.desktopmodules.core.renderer.font.Font;
 import de.labystudio.desktopmodules.core.renderer.font.FontStyle;
 import de.labystudio.desktopmodules.core.renderer.font.StringAlignment;
@@ -20,6 +18,10 @@ public class SampleModule extends Module {
 
     private BufferedImage sampleTexture;
 
+    public SampleModule() {
+        super(250, 60);
+    }
+
     @Override
     public void onInitialize(Addon addon) {
         super.onInitialize(addon);
@@ -30,11 +32,6 @@ public class SampleModule extends Module {
     @Override
     public void loadTextures(TextureLoader textureLoader) {
         this.sampleTexture = textureLoader.loadTexture("textures/sample/sample.png");
-    }
-
-    @Override
-    protected IModuleRenderer createRenderer() {
-        return new SwingModuleRenderer(this, 250, 60);
     }
 
     @Override
