@@ -48,6 +48,11 @@ public abstract class Module implements IRenderCallback {
     private boolean enabled;
 
     /**
+     * Module is on the right side of the target monitor
+     */
+    protected boolean rightBound;
+
+    /**
      * The icon of the module
      */
     private BufferedImage icon;
@@ -118,6 +123,10 @@ public abstract class Module implements IRenderCallback {
         return moduleRenderer;
     }
 
+    public boolean isRightBound() {
+        return this.rightBound;
+    }
+
     @Override
     public void onMousePressed(int x, int y, int mouseButton) {
         if (!this.dragging) {
@@ -146,6 +155,10 @@ public abstract class Module implements IRenderCallback {
 
             // Update module location
             this.moduleRenderer.setLocation(x, y);
+
+            // Update right bound state
+            IScreenBounds targetBounds = this.moduleRenderer.getScreenBoundsOfTargetMonitor();
+            this.rightBound = offsetX > targetBounds.getMinX() + (targetBounds.getMaxX() - targetBounds.getMinX()) / 2;
         }
     }
 
