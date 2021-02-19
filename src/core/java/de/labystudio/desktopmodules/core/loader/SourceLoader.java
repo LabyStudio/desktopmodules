@@ -223,6 +223,7 @@ public class SourceLoader {
 
         // Register the module
         this.modules.add(module);
+        addon.getModules().add(module);
 
         return module;
     }
@@ -251,5 +252,9 @@ public class SourceLoader {
 
     public List<Addon> getAddons() {
         return addons;
+    }
+
+    public File getAddonsDirectory() {
+        return addonsDirectory;
     }
 }

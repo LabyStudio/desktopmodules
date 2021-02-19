@@ -68,24 +68,6 @@ public abstract class Module implements IRenderCallback {
     }
 
     /**
-     * Create the module renderer or destroy it
-     *
-     * @param enabled New module visible state
-     */
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-
-        if (enabled) {
-            // Create module renderer
-            this.moduleRenderer = createRenderer();
-        } else if (this.moduleRenderer != null) {
-            // Close the window
-            this.moduleRenderer.close();
-            this.moduleRenderer = null;
-        }
-    }
-
-    /**
      * Create renderer for this module
      *
      * @return The created implementation for the model render interface
@@ -162,6 +144,27 @@ public abstract class Module implements IRenderCallback {
 
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    /**
+     * Create the module renderer or destroy it
+     *
+     * @param enabled New module visible state
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+
+        if (enabled && this.moduleRenderer == null) {
+            // Create module renderer
+            this.moduleRenderer = createRenderer();
+        } else if (this.moduleRenderer != null) {
+            // Close the window
+            this.moduleRenderer.close();
+            this.moduleRenderer = null;
+        }
+
+        // Call visibility change
+        this.addon.onModuleVisibilityChanged(this, enabled);
     }
 
     public BufferedImage getIcon() {
