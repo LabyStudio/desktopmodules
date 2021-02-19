@@ -158,7 +158,7 @@ public abstract class Module implements IRenderCallback {
 
             // Update right bound state
             IScreenBounds targetBounds = this.moduleRenderer.getScreenBoundsOfTargetMonitor();
-            this.rightBound = offsetX > targetBounds.getMinX() + (targetBounds.getMaxX() - targetBounds.getMinX()) / 2;
+            this.rightBound = x + this.width / 2 - targetBounds.getMinX() > (targetBounds.getMaxX() - targetBounds.getMinX()) / 2;
         }
     }
 
