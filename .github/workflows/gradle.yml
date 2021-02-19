@@ -22,19 +22,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Upload jar
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: Artifacts
-        path: build/libs/
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: |
-          Automatic release by GitHub Actions
-        draft: false
-        prerelease: false
+        path: build/libs/*.jar
