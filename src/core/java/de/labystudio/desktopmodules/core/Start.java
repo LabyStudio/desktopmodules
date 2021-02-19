@@ -31,7 +31,7 @@ public class Start {
 
         // Load internal addon
         if (args.length != 0) {
-            desktopModules.getSourceLoader().loadInternalAddonAsync(args[0]);
+            desktopModules.getSourceLoader().registerAddon(args[0]);
         }
     }
 
