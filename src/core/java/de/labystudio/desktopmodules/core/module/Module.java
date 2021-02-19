@@ -58,13 +58,12 @@ public abstract class Module implements IRenderCallback {
     /**
      * Called on first class load.
      * Override this method instead of creating a constructor
+     *
+     * @param addon The addon that loaded this module
      */
-    public void onInitialize(Addon addon, boolean enabled) {
+    public void onInitialize(Addon addon) {
         this.addon = addon;
         this.icon = addon.getDesktopModules().getTextureLoader().loadTexture(getIconPath());
-
-        // Create a module renderer
-        setEnabled(enabled);
     }
 
     /**

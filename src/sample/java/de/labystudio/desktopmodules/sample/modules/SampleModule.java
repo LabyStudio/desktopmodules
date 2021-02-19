@@ -21,8 +21,8 @@ public class SampleModule extends Module {
     private BufferedImage sampleTexture;
 
     @Override
-    public void onInitialize(Addon addon, boolean enabled) {
-        super.onInitialize(addon, enabled);
+    public void onInitialize(Addon addon) {
+        super.onInitialize(addon);
 
         System.out.println("Module of " + this.addon.getDisplayName() + " initialized");
     }

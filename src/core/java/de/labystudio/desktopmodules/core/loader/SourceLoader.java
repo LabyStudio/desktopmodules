@@ -214,16 +214,16 @@ public class SourceLoader {
         // Create instance of the module
         Module module = load(moduleClass);
 
-        // TODO Read config value
-        boolean enabled = true;
-
         // Initialize the module
         module.loadTextures(this.desktopModules.getTextureLoader());
-        module.onInitialize(addon, enabled);
+        module.onInitialize(addon);
 
         // Register the module
         this.modules.add(module);
         addon.getModules().add(module);
+
+        // TODO Read config value
+        module.setEnabled(true);
 
         return module;
     }
