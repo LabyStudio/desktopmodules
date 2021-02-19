@@ -3,7 +3,7 @@ DesktopModules is an application that allows you to create overlays for your ope
 The modules are displayed over all your programs and games and are freely movable.
 
 ## Available Addons
-- [Spotify](https://github.com/LabyStudio/spotify-module)
+- [Spotify](https://github.com/LabyStudio/spotify-addon)
 
 ## Sample Preview
 ![sample](.github/assets/sample.png)
@@ -111,3 +111,5 @@ To make it available as a jar file, you have to define the addon class name in t
   "main": "your.package.name.TestAddon"
 }
 ```
+
+To use your addon, put the jar file into the following directory: ``C:/Users/<name>/AppData/Roaming/DesktopModules/addons/``
