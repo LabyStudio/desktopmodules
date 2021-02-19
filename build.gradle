@@ -10,10 +10,6 @@ compileJava   {
     targetCompatibility = '1.8'
 }
 
-configurations {
-    jar.archiveName = 'desktopmodules.jar'
-}
-
 repositories {
     mavenCentral()
 }

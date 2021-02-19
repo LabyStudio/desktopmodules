@@ -25,4 +25,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Artifacts
-        path: build/libs/desktopmodules.jar
+        path: build/libs/*.jar
