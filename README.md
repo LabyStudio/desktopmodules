@@ -2,11 +2,22 @@
 DesktopModules is an application that allows you to create overlays for your operating system.
 The modules are displayed over all your programs and games and are freely movable.
 
+![preview](.github/assets/preview.png)
+
 ## Available Addons
 - [Spotify](https://github.com/LabyStudio/spotify-addon)
 
-## Sample Preview
-![preview](.github/assets/preview.png)
+*Feel free to add your addons!*
+
+## Installation
+1. Download the artifact from the latest [build](https://github.com/LabyStudio/desktopmodules/actions) and extract the jar file.
+2. Place your addon jars in the following directory: ``C:/Users/<name>/AppData/Roaming/DesktopModules/addons/``
+3. Run ``desktopmodules-core.jar`` with java
+
+## Settings
+You can left-click on the tray icon to manage your installed addons.<br>
+You can exit the application by right-clicking the tray icon and selecting "Exit"
+
 ![settings](.github/assets/settings.png)
 
 ## Setup sample module
