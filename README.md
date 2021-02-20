@@ -61,7 +61,7 @@ import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class TestModule extends Module {
+public class TestModule extends Module<TestAddon> {
     
     private BufferedImage testTexture;
 
@@ -91,7 +91,7 @@ public class TestModule extends Module {
 
     @Override
     public void onRender(IRenderContext context, int width, int height) {
-        context.fillRect(0, 0, width - 1, height - 1, new Color(50, 50, 50, 130));
+        context.drawRect(0, 0, width - 1, height - 1, new Color(50, 50, 50, 130));
         context.drawImage(this.testTexture, 0, 0, height, height);
         
         // Render your module...
@@ -100,7 +100,7 @@ public class TestModule extends Module {
 ```
 
 ### Test your addon
-Launch the application at ``de.labystudio.desktopmodules.core.Start`` with the program parameter ``your.package.name.TestAddon``
+Launch the main class``Start`` with the program parameter ``your.package.name.TestAddon``
 
 ### Build your addon
 To make it available as a jar file, you have to define the addon class name in the ``/addon.json``

@@ -29,6 +29,8 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
 
     private long lastToFontCall = -1L;
 
+    private boolean mouseOver;
+
     /**
      * Create new swing module renderer
      *
@@ -110,6 +112,11 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
     }
 
     @Override
+    public boolean isMouseOver() {
+        return this.mouseOver;
+    }
+
+    @Override
     public void mousePressed(MouseEvent event) {
         this.renderCallback.onMousePressed(event.getX(), event.getY(), event.getButton());
     }
@@ -125,17 +132,17 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        // Unused
-    }
-
-    @Override
     public void mouseEntered(MouseEvent e) {
-        // Unused
+        this.mouseOver = true;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        this.mouseOver = false;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
         // Unused
     }
 

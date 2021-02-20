@@ -68,4 +68,11 @@ public interface IModuleRenderer {
      * @return Target monitor bounds
      */
     IScreenBounds getScreenBoundsOfTargetMonitor();
+
+    /**
+     * Is mouse over a rendered part of the module
+     *
+     * @return Mouse is over the module
+     */
+    boolean isMouseOver();
 }

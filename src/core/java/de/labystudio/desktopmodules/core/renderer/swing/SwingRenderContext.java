@@ -6,6 +6,8 @@ import de.labystudio.desktopmodules.core.renderer.font.StringAlignment;
 import de.labystudio.desktopmodules.core.renderer.font.StringEffect;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 
@@ -32,19 +34,35 @@ public class SwingRenderContext implements IRenderContext {
     }
 
     @Override
-    public void drawRect(int left, int top, int right, int bottom, Color color) {
+    public void drawOutline(int left, int top, int right, int bottom, Color color) {
         this.graphics.setColor(color);
         this.graphics.drawRect(left, top, right - left, bottom - top);
     }
 
     @Override
-    public void fillRect(int left, int top, int right, int bottom, Color color) {
+    public void drawRect(int left, int top, int right, int bottom, Color color) {
         this.graphics.setColor(color);
         this.graphics.fillRect(left, top, right - left, bottom - top);
     }
 
     @Override
-    public void drawString(String text, float x, float y, StringAlignment alignment, StringEffect effect, Color color) {
+    public void drawRectWH(int x, int y, int width, int height, Color color) {
+        this.graphics.setColor(color);
+        this.graphics.fillRect(x, y, width, height);
+    }
+
+    @Override
+    public void drawGradientRect(int left, int top, int right, int bottom, Color from, int fromX, int fromY, Color to, int toX, int toY) {
+        this.graphics.setPaint(new GradientPaint(
+                new Point2D.Double(fromX, fromY), from,
+                new Point2D.Double(toX, toY), to));
+        this.graphics.fill(new Rectangle2D.Double(left, top, right - left, bottom - top));
+    }
+
+    @Override
+    public void drawString(String text, float x, float y, StringAlignment alignment, StringEffect effect, Color color, Font font) {
+        setFont(font);
+
         FontMetrics fontMetrics = this.graphics.getFontMetrics();
 
         int textWidth = fontMetrics.stringWidth(text);
@@ -52,10 +70,8 @@ public class SwingRenderContext implements IRenderContext {
 
         // Draw effects
         if (effect == StringEffect.SHADOW) {
-            float shadowOffset = fontMetrics.getHeight() / 30F + 1.0F;
-
             this.graphics.setColor(Color.BLACK);
-            this.graphics.drawString(text, x + shadowOffset - xOffset, y + shadowOffset);
+            this.graphics.drawString(text, x - xOffset + 1, y + 1);
         }
 
         // Draw text
@@ -64,8 +80,9 @@ public class SwingRenderContext implements IRenderContext {
     }
 
     @Override
-    public void setFont(Font font) {
-        this.graphics.setFont(new java.awt.Font(font.getFontFamily(), font.getStyle().ordinal(), font.getSize()));
+    public int getStringWidth(String text, Font font) {
+        setFont(font);
+        return this.graphics.getFontMetrics().stringWidth(text);
     }
 
     @Override
@@ -76,5 +93,12 @@ public class SwingRenderContext implements IRenderContext {
     @Override
     public void drawImage(BufferedImage image, int x, int y, int width, int height) {
         this.graphics.drawImage(image, x, y, width, height, null, null);
+    }
+
+    /**
+     * Set font of the current context
+     */
+    private void setFont(Font font) {
+        this.graphics.setFont(new java.awt.Font(font.getFontFamily(), font.getStyle().ordinal(), font.getSize()));
     }
 }

@@ -14,8 +14,8 @@ import java.awt.image.BufferedImage;
  */
 public abstract class Module<T extends Addon> implements IRenderCallback {
 
-    private final int width;
-    private final int height;
+    protected final int width;
+    protected final int height;
 
     /**
      * The render instance of this module
@@ -113,6 +113,15 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
      * Called on each application tick
      */
     public abstract void onTick();
+
+    /**
+     * Is mouse over a rendered part of the module
+     *
+     * @return Mouse is over the module
+     */
+    public boolean isMouseOver() {
+        return this.moduleRenderer != null && this.moduleRenderer.isMouseOver();
+    }
 
     /**
      * Get module renderer interface of module

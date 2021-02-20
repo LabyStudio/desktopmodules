@@ -23,7 +23,7 @@ sourceSets.main.resources.srcDirs = ["src/core/resources", "src/sample/resources
 
 jar {
     manifest {
-        attributes 'Main-Class': 'de.labystudio.desktopmodules.core.main.Start'
+        attributes 'Main-Class': 'Start'
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
