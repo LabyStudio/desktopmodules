@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 /**
  * @author LabyStudio
  */
-public abstract class Module implements IRenderCallback {
+public abstract class Module<T extends Addon> implements IRenderCallback {
 
     private final int width;
     private final int height;
@@ -25,7 +25,7 @@ public abstract class Module implements IRenderCallback {
     /**
      * The addon which the module belongs to
      */
-    protected Addon addon;
+    protected T addon;
 
     /**
      * Last clicked mouse x position relative to the module position
@@ -81,7 +81,7 @@ public abstract class Module implements IRenderCallback {
      *
      * @param addon The addon that loaded this module
      */
-    public void onInitialize(Addon addon) {
+    public void onInitialize(T addon) {
         this.addon = addon;
         this.icon = addon.getDesktopModules().getTextureLoader().loadTexture(getIconPath());
     }
