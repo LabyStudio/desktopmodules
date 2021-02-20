@@ -19,5 +19,15 @@ public enum StringAlignment {
     /**
      * Right alignment
      */
-    RIGHT
+    RIGHT;
+
+    /**
+     * Convert rightbound state to string aligntment
+     *
+     * @param rightbound Set the alignment to RIGHT
+     * @return StringAlignment
+     */
+    public StringAlignment from(boolean rightbound) {
+        return rightbound ? RIGHT : LEFT;
+    }
 }
