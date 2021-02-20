@@ -53,7 +53,7 @@ public class SampleModule extends Module {
     public void onRender(IRenderContext context, int width, int height) {
         context.fillRect(0, 0, width - 1, height - 1, new Color(50, 50, 50, 130));
         context.setFont(SAMPLE_FONT);
-        context.drawString("Sample Module!", width - 20, 38, StringAlignment.RIGHT, StringEffect.NONE, Color.WHITE);
+        context.drawString("Sample Module!", this.rightBound ? 20 : width - 20, 38, this.rightBound ? StringAlignment.LEFT : StringAlignment.RIGHT, StringEffect.NONE, Color.WHITE);
         context.drawImage(this.sampleTexture, this.rightBound ? width - height : 0, 0, height, height);
     }
 }
