@@ -27,7 +27,7 @@ public enum StringAlignment {
      * @param rightbound Set the alignment to RIGHT
      * @return StringAlignment
      */
-    public StringAlignment from(boolean rightbound) {
+    public static StringAlignment from(boolean rightbound) {
         return rightbound ? RIGHT : LEFT;
     }
 }
