@@ -47,7 +47,6 @@ public interface IRenderContext {
      */
     void drawRectWH(int x, int y, int width, int height, Color color);
 
-
     /**
      * Draw gradient rectangle
      *

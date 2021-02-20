@@ -6,7 +6,7 @@ The modules are displayed over all your programs and games and are freely movabl
 - [Spotify](https://github.com/LabyStudio/spotify-addon)
 
 ## Sample Preview
-![sample](.github/assets/sample.png)
+![preview](.github/assets/preview.png)
 ![settings](.github/assets/settings.png)
 
 ## Setup sample module
@@ -40,6 +40,7 @@ public class TestAddon extends Addon {
     public void onEnable() throws Exception {
         System.out.println("Test addon enabled!");
 
+        // Register your modules
         registerModule(TestModule.class);
     }
 
