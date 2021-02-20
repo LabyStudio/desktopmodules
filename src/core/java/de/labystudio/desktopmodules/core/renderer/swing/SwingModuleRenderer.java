@@ -106,7 +106,7 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
 
     @Override
     public IScreenBounds getScreenBoundsOfTargetMonitor() {
-        return new SwingScreenBounds(getX(), getY());
+        return new SwingScreenBounds(getX() + getWidth() / 2, getY());
     }
 
     @Override

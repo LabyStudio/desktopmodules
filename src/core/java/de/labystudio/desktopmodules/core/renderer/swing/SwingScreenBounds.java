@@ -51,8 +51,8 @@ public class SwingScreenBounds implements IScreenBounds {
             // Store bounds
             this.minX = bounds.x;
             this.minY = bounds.y;
-            this.maxX = bounds.x + bounds.width - bounds.x;
-            this.maxY = bounds.y + bounds.height - bounds.y;
+            this.maxX = bounds.x + bounds.width;
+            this.maxY = bounds.y + bounds.height;
 
             break;
         }
