@@ -37,7 +37,7 @@ public class SourceLoader {
     private final DesktopModules desktopModules;
 
     private final List<Addon> addons = new CopyOnWriteArrayList<>();
-    private final List<Module> modules = new CopyOnWriteArrayList<>();
+    private final List<Module<? extends Addon>> modules = new CopyOnWriteArrayList<>();
 
     private final File addonsDirectory;
 
@@ -210,9 +210,9 @@ public class SourceLoader {
      * @return The loaded module instance
      * @throws Exception
      */
-    public Module loadModule(Addon addon, Class<? extends Module> moduleClass) throws Exception {
+    public Module<? extends Addon> loadModule(Addon addon, Class<? extends Module> moduleClass) throws Exception {
         // Create instance of the module
-        Module module = load(moduleClass);
+        Module<Addon> module = load(moduleClass);
 
         // Initialize the module
         module.loadTextures(this.desktopModules.getTextureLoader());
@@ -246,7 +246,7 @@ public class SourceLoader {
      *
      * @return List of all loaded modules
      */
-    public List<Module> getModules() {
+    public List<Module<? extends Addon>> getModules() {
         return modules;
     }
 

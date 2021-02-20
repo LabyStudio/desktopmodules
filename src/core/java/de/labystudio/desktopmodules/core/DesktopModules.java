@@ -65,7 +65,7 @@ public class DesktopModules {
     private void onTick() {
         try {
             // Tick all loaded modules
-            for (Module module : this.sourceLoader.getModules()) {
+            for (Module<? extends Addon> module : this.sourceLoader.getModules()) {
                 if (module.isEnabled()) {
                     // Tick module
                     module.onTick();

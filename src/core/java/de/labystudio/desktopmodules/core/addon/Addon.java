@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class Addon {
 
-    private final List<Module> modules = new CopyOnWriteArrayList<>();
+    private final List<Module<? extends Addon>> modules = new CopyOnWriteArrayList<>();
     protected DesktopModules desktopModules;
 
     /**
@@ -41,7 +41,7 @@ public abstract class Addon {
      * @param module  The module that changed the visibility
      * @param enabled The new visibility state of the module
      */
-    public void onModuleVisibilityChanged(Module module, boolean enabled) {
+    public void onModuleVisibilityChanged(Module<? extends Addon> module, boolean enabled) {
         // No implementation
     }
 
@@ -77,7 +77,7 @@ public abstract class Addon {
      * @return The loaded module
      * @throws Exception
      */
-    public Module registerModule(Class<? extends Module> moduleClass) throws Exception {
+    public Module<? extends Addon> registerModule(Class<? extends Module> moduleClass) throws Exception {
         return this.desktopModules.getSourceLoader().loadModule(this, moduleClass);
     }
 
@@ -87,7 +87,7 @@ public abstract class Addon {
      * @return Has at least one active module
      */
     public boolean hasActiveModules() {
-        for (Module module : this.modules) {
+        for (Module<? extends Addon> module : this.modules) {
             if (module.isEnabled()) {
                 return true;
             }
@@ -99,7 +99,7 @@ public abstract class Addon {
         return desktopModules;
     }
 
-    public List<Module> getModules() {
+    public List<Module<? extends Addon>> getModules() {
         return modules;
     }
 }

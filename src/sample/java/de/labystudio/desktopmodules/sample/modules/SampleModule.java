@@ -8,11 +8,12 @@ import de.labystudio.desktopmodules.core.renderer.font.Font;
 import de.labystudio.desktopmodules.core.renderer.font.FontStyle;
 import de.labystudio.desktopmodules.core.renderer.font.StringAlignment;
 import de.labystudio.desktopmodules.core.renderer.font.StringEffect;
+import de.labystudio.desktopmodules.sample.SampleAddon;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class SampleModule extends Module {
+public class SampleModule extends Module<SampleAddon> {
 
     private static final Font SAMPLE_FONT = new Font("Impact", FontStyle.PLAIN, 24);
 
@@ -23,7 +24,7 @@ public class SampleModule extends Module {
     }
 
     @Override
-    public void onInitialize(Addon addon) {
+    public void onInitialize(SampleAddon addon) {
         super.onInitialize(addon);
 
         System.out.println("Module of " + this.addon.getDisplayName() + " initialized");
