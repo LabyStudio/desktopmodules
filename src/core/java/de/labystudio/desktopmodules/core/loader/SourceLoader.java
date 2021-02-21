@@ -196,11 +196,9 @@ public class SourceLoader {
         Addon addon = load(clazz);
 
         // Initialize the addon
-        addon.onInitialize(this.desktopModules);
-
-        // Enable the addon
+        addon.onPreInitialize(this.desktopModules);
         addon.loadConfig();
-        addon.onEnable();
+        addon.onInitialize();
 
         // Register addon
         this.addons.add(addon);

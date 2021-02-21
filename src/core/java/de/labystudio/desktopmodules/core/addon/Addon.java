@@ -25,22 +25,30 @@ public abstract class Addon {
     protected JsonObject config;
 
     /**
-     * Called on initialize
-     * Override this method instead of creating a constructor
+     * Called when loading the addon classes into the application.
+     * The config is not loaded yet in this event.
+     * Don't register any modules here!
      *
      * @param desktopModules DesktopModules core instance
      */
-    public void onInitialize(DesktopModules desktopModules) {
+    public void onPreInitialize(DesktopModules desktopModules) throws Exception {
         this.desktopModules = desktopModules;
     }
 
     /**
-     * Called on enabling the addon
+     * Called when loading the addon classes into the application.
+     * This event has access to the config object of the addon.
+     * Register your modules in this event!
+     */
+    public abstract void onInitialize() throws Exception;
+
+    /**
+     * Called when enabling on of your modules
      */
     public abstract void onEnable() throws Exception;
 
     /**
-     * Called on disabling the addon
+     * Called when all modules are disabled
      */
     public abstract void onDisable() throws Exception;
 
@@ -83,7 +91,7 @@ public abstract class Addon {
     public void saveConfig() throws IOException {
         // Store necessary values of all modules
         for (Module<? extends Addon> module : this.modules) {
-            if(module.isEnabled()) {
+            if (module.isEnabled()) {
                 module.onSaveConfig(module.getConfig());
             }
         }

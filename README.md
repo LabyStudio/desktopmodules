@@ -43,14 +43,11 @@ allprojects {
 The main class of your addon. You have to register your modules in the onEnable method.
 ```java
 import de.labystudio.desktopmodules.core.addon.Addon;
-import de.labystudio.desktopmodules.sample.modules.SampleModule;
 
 public class TestAddon extends Addon {
 
     @Override
-    public void onEnable() throws Exception {
-        System.out.println("Test addon enabled!");
-
+    public void onInitialize() throws Exception {
         // Config example
         if (!this.config.has("flag")) {
             this.config.addProperty("flag", true);
@@ -63,7 +60,14 @@ public class TestAddon extends Addon {
     }
 
     @Override
+    public void onEnable() {
+        // Called when at least one module of the addon activates
+        System.out.println("Test addon enabled!");
+    }
+
+    @Override
     public void onDisable() {
+        // Called when all modules of the addon are disabled
         System.out.println("Test addon disabled!");
     }
 }
