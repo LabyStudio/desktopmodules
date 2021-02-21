@@ -5,13 +5,11 @@ import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.gui.widget.ModuleWidget;
 import de.labystudio.desktopmodules.core.module.Module;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.io.InputStream;
-import java.util.Objects;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +26,6 @@ public class GuiSettings extends JDialog implements Runnable {
     private final ScheduledFuture<?> fadeInTask;
     private int fadeInTick = 0;
 
-
     /**
      * Create a new window
      *
@@ -36,20 +33,6 @@ public class GuiSettings extends JDialog implements Runnable {
      */
     public GuiSettings(DesktopModules desktopModules) {
         this.desktopModules = desktopModules;
-
-        // Set icon
-        try {
-            InputStream inputStream = desktopModules.getClassLoader().getResourceAsStream("textures/core/icon.png");
-            if (inputStream != null) {
-                try {
-                    setIconImage(ImageIO.read(inputStream));
-                } finally {
-                    inputStream.close();
-                }
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
 
         // Setup window
         setTitle("DesktopModules Settings");
@@ -133,7 +116,7 @@ public class GuiSettings extends JDialog implements Runnable {
 
         // Add all modules
         for (Addon addon : this.desktopModules.getSourceLoader().getAddons()) {
-            for (Module module : this.desktopModules.getSourceLoader().getModules()) {
+            for (Module<? extends Addon> module : this.desktopModules.getSourceLoader().getModules()) {
 
                 // Group modules by addon
                 if (module.getAddon() == addon) {

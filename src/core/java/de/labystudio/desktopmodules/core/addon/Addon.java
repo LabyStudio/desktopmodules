@@ -107,13 +107,16 @@ public abstract class Addon {
     public void setModuleVisibility(Module<? extends Addon> module, Boolean enabled) {
         try {
             if (enabled) {
-                // Load config when changing the state to enabled
-                module.onLoadConfig(module.getConfig());
+                // Load the config of the entire addon to get the new module config (Loading from file)
+                loadConfig();
 
-                // Save config after creating the module renderer
+                // Load config when changing the state to enabled (It's not actually loading the file)
+                module.onLoadConfig(getModuleConfig(module));
+
+                // Save config after creating the module renderer (Writing to file)
                 saveConfig();
             } else {
-                // Save config before destroying the module renderer
+                // Save config before destroying the module renderer (Writing to file)
                 saveConfig();
 
                 // Disable module

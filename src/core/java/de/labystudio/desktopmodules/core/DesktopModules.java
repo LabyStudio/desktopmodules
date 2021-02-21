@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DesktopModules {
 
+    public static final boolean OS_WIN = System.getProperty("os.name").toLowerCase().contains("win");
     public static final int TICKS_PER_SECOND = 20;
 
     private final Thread SHUTDOWN_HOOK = new Thread(this::shutdown);

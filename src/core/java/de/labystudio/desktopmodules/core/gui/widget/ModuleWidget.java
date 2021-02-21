@@ -1,26 +1,27 @@
 package de.labystudio.desktopmodules.core.gui.widget;
 
 import de.labystudio.desktopmodules.core.addon.Addon;
+import de.labystudio.desktopmodules.core.gui.util.WinUtils;
+import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.function.Consumer;
+import java.io.File;
 
 /**
  * Module list entry item
  *
  * @author LabyStudio
  */
-public class ModuleWidget extends JPanel implements Consumer<Boolean> {
+public class ModuleWidget extends JPanel {
 
     public static final int WIDGET_HEIGHT = 60;
     private static final Font FONT = new Font("Dubai Medium", Font.PLAIN, 18);
 
     private final Module<? extends Addon> module;
 
-    private final SwitchWidget switchWidget;
 
     /**
      * Create a entry item for the given module
@@ -29,8 +30,27 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
      */
     public ModuleWidget(Module<? extends Addon> module) {
         this.module = module;
-        this.switchWidget = new SwitchWidget(module.isEnabled());
-        this.switchWidget.setActionListener(this);
+
+        // Create switch widget
+        SwitchWidget switchWidget = new SwitchWidget(module.isEnabled());
+        switchWidget.setActionListener(enabled -> {
+            // Update module visibility
+            this.module.getAddon().setModuleVisibility(this.module, enabled);
+        });
+
+        // Create advanced gear widget
+        TextureLoader textureLoader = module.getAddon().getDesktopModules().getTextureLoader();
+        AdvancedWidget advancedWidget = new AdvancedWidget(textureLoader);
+        advancedWidget.setActionListener(unused -> {
+            // Open config file in editor
+            File file = this.module.getAddon().getConfigFile();
+            WinUtils.openFileEditor(file);
+
+            // Turn off module to avoid conflicts while editing the config
+            if (this.module.isEnabled()) {
+                this.module.getAddon().setModuleVisibility(this.module, false);
+            }
+        });
 
         // Widget height
         setBorder(new EmptyBorder(10, 0, 10, 0));
@@ -43,7 +63,8 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
         JPanel settingsPanel = new JPanel();
         settingsPanel.setOpaque(false);
         settingsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        settingsPanel.add(this.switchWidget);
+        settingsPanel.add(advancedWidget);
+        settingsPanel.add(switchWidget);
         add(settingsPanel);
     }
 
@@ -56,6 +77,7 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
         // Smooth rendering
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
         // Draw module icon
         g.drawImage(this.module.getIcon(), iconPadding, iconPadding, getHeight() - iconPadding * 2, getHeight() - iconPadding * 2, null);
@@ -64,11 +86,5 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
         g.setFont(FONT);
         g.setColor(Color.DARK_GRAY);
         g.drawString(this.module.getDisplayName(), getHeight() + iconPadding, getHeight() / 2 + 7);
-    }
-
-    @Override
-    public void accept(Boolean enabled) {
-        Addon addon = this.module.getAddon();
-        addon.setModuleVisibility(this.module, enabled);
     }
 }

@@ -3,12 +3,9 @@ package de.labystudio.desktopmodules.core.tray;
 import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.gui.GuiSettings;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.InputStream;
-import java.util.Objects;
 
 /**
  * Tray icon to manage the application
@@ -33,10 +30,8 @@ public class TrayHandler implements MouseListener {
     public TrayHandler(DesktopModules desktopModules) throws Exception {
         this.desktopModules = desktopModules;
 
-        // Load try icon
-        InputStream inputStream = desktopModules.getClassLoader().getResourceAsStream("textures/core/tray.png");
-        Image trayImage = ImageIO.read(Objects.requireNonNull(inputStream));
-        inputStream.close();
+        // Load tray icon
+        Image trayImage = desktopModules.getTextureLoader().loadTexture("textures/core/tray.png");
 
         // Register system tray
         this.trayIcon = new TrayIcon(trayImage);
