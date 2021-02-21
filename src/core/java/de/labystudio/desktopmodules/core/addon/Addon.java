@@ -83,7 +83,9 @@ public abstract class Addon {
     public void saveConfig() throws IOException {
         // Store necessary values of all modules
         for (Module<? extends Addon> module : this.modules) {
-            module.onSaveConfig(module.getConfig());
+            if(module.isEnabled()) {
+                module.onSaveConfig(module.getConfig());
+            }
         }
 
         File file = getConfigFile();

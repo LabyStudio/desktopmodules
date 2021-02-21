@@ -237,6 +237,11 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
         this.dragging = false;
     }
 
+    @Override
+    public void onMouseScroll(int x, int y, int scrollAmount) {
+        // No implementation
+    }
+
     public BufferedImage getIcon() {
         return this.icon;
     }

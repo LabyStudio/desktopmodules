@@ -7,9 +7,7 @@ import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 /**
  * Swing implementation of the module renderer
@@ -17,7 +15,8 @@ import java.awt.event.MouseMotionListener;
  *
  * @author LabyStudio
  */
-public class SwingModuleRenderer extends JDialog implements IModuleRenderer, MouseListener, MouseMotionListener {
+public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
+        MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final long TO_FONT_PERIOD_MS = 1000 * 3;
 
@@ -61,6 +60,7 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
         // Listener
         addMouseListener(this);
         addMouseMotionListener(this);
+        addMouseWheelListener(this);
     }
 
     @Override
@@ -143,6 +143,11 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
     @Override
     public void mouseExited(MouseEvent e) {
         this.mouseOver = false;
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent event) {
+        this.renderCallback.onMouseScroll(event.getX(), event.getY(), event.getWheelRotation());
     }
 
     @Override

@@ -45,4 +45,12 @@ public interface IRenderCallback {
      */
     void onMouseReleased(int x, int y, int mouseButton);
 
+    /**
+     * Called on mouse wheel scrolling
+     *
+     * @param x        Mouse position x
+     * @param y        Mouse position y
+     * @param velocity Scrolled velocity amount (Can be negative)
+     */
+    void onMouseScroll(int x, int y, int velocity);
 }
