@@ -4,12 +4,13 @@ import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.gui.widget.ModuleWidget;
 import de.labystudio.desktopmodules.core.module.Module;
+import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
+import de.labystudio.desktopmodules.core.renderer.swing.SwingScreenBounds;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,7 @@ public class GuiSettings extends JDialog implements Runnable {
 
     private final DesktopModules desktopModules;
 
-    private final ScheduledFuture<?> fadeInTask;
+    private ScheduledFuture<?> fadeInTask;
     private int fadeInTick = 0;
 
     /**
@@ -45,7 +46,6 @@ public class GuiSettings extends JDialog implements Runnable {
         // Overlay
         setAlwaysOnTop(true);
         setOpacity(0.0F);
-        setVisible(true);
 
         // Dispose on focus loss
         addFocusListener(new FocusAdapter() {
@@ -54,9 +54,6 @@ public class GuiSettings extends JDialog implements Runnable {
                 dispose();
             }
         });
-
-        // Fade in animation
-        this.fadeInTask = Executors.newScheduledThreadPool(1).scheduleAtFixedRate(this, 0, 10, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -84,20 +81,50 @@ public class GuiSettings extends JDialog implements Runnable {
         setVisible(true);
         toFront();
 
+        // Fade in animation
+        this.fadeInTask = Executors.newScheduledThreadPool(1).scheduleAtFixedRate(this, 0, 10, TimeUnit.MILLISECONDS);
+
         return this;
     }
 
     /**
-     * Move the window to the mouse cursor
+     * Calculate the position of the tray icon and move the window to it
      *
      * @return GuiSettings instance
      */
-    public GuiSettings moveToMouse() {
+    public GuiSettings moveToTray() {
         Point point = MouseInfo.getPointerInfo().getLocation();
-        boolean taskbarAtTop = point.y < Toolkit.getDefaultToolkit().getScreenSize().height / 2;
+        IScreenBounds screen = new SwingScreenBounds(point.x, point.y);
 
-        // Update location
-        setLocation(point.x - getWidth(), taskbarAtTop ? point.y : point.y - getHeight());
+        int mouseX = point.x - screen.getMinX();
+        int mouseY = point.y - screen.getMinY();
+
+        // Get target screen width and height
+        int screenWidth = Math.abs(screen.getMaxX() - screen.getMinX());
+        int screenHeight = Math.abs(screen.getMaxY() - screen.getMinY());
+
+        int taskBarHeight = 40;
+        int taskBarWidth = 62;
+
+        // Find the area of the taskbar
+        boolean taskbarAtTop = mouseY < screenHeight / 2;
+        boolean taskbarAtLeft = mouseX < screenWidth / 2;
+        boolean taskbarAtRight = !taskbarAtTop && !taskbarAtLeft && mouseY < screenHeight - taskBarHeight;
+
+        // Predict taskbar location
+        if (taskbarAtRight || taskbarAtLeft) {
+            int x = taskbarAtLeft ? screen.getMinX() + taskBarWidth : screen.getMaxX() - getWidth() - taskBarWidth;
+            int y = mouseY - getHeight();
+
+            // Update location
+            setLocation(x, screen.getMinY() + y);
+        } else {
+            int x = mouseX - getWidth();
+            int y = taskbarAtTop ? screen.getMinY() + taskBarHeight : screen.getMaxY() - getHeight() - taskBarHeight;
+
+            // Update location
+            setLocation(screen.getMinX() + x, y);
+        }
 
         return this;
     }

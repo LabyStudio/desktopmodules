@@ -83,7 +83,7 @@ public class TrayHandler implements MouseListener {
     private void openSettings() {
         // Create new window or focus active one
         if (this.guiSettings == null || !this.guiSettings.isVisible()) {
-            (this.guiSettings = new GuiSettings(this.desktopModules)).moveToMouse().init();
+            (this.guiSettings = new GuiSettings(this.desktopModules)).moveToTray().init();
         } else {
             this.guiSettings.toFront();
         }
