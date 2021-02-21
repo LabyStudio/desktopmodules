@@ -1,5 +1,6 @@
 package de.labystudio.desktopmodules.core.module;
 
+import com.google.gson.JsonObject;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
@@ -16,6 +17,8 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
 
     protected final int width;
     protected final int height;
+
+    protected JsonObject config;
 
     /**
      * The render instance of this module
@@ -69,21 +72,48 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     }
 
     /**
-     * Load all texture of this module
+     * Called when loading the addon into the application
      *
-     * @param textureLoader Texture loader to load the texture
+     * @param addon  The addon that loaded this module
+     * @param config The config element of this module
      */
-    public abstract void loadTextures(TextureLoader textureLoader);
+    public void onInitialize(T addon, JsonObject config) {
+        this.addon = addon;
+        this.config = config;
+
+        this.icon = addon.getDesktopModules().getTextureLoader().loadTexture(getIconPath());
+    }
 
     /**
-     * Called on first class load.
-     * Override this method instead of creating a constructor
+     * Called before each config save
      *
-     * @param addon The addon that loaded this module
+     * @param config The module config
      */
-    public void onInitialize(T addon) {
-        this.addon = addon;
-        this.icon = addon.getDesktopModules().getTextureLoader().loadTexture(getIconPath());
+    public void onSaveConfig(JsonObject config) {
+        // Save module visibility state
+        config.addProperty("enabled", this.enabled);
+
+        // Save module position
+        config.addProperty("x", this.moduleRenderer.getX());
+        config.addProperty("y", this.moduleRenderer.getY());
+    }
+
+    /**
+     * Called when loading the addon
+     *
+     * @param config The module config
+     */
+    public void onLoadConfig(JsonObject config) {
+        // Load module visibility state
+        setEnabled(!config.has("enabled") || config.get("enabled").getAsBoolean());
+
+        // Load module position
+        int x = config.has("x") ? config.get("x").getAsInt() : 0;
+        int y = config.has("y") ? config.get("y").getAsInt() : 0;
+        this.moduleRenderer.setLocation(x, y);
+
+        // Update right bound state after changing the location of the module
+        updateRightBoundState();
     }
 
     /**
@@ -94,6 +124,13 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     protected IModuleRenderer createRenderer() {
         return new SwingModuleRenderer(this, this.width, this.height);
     }
+
+    /**
+     * Load all texture of this module
+     *
+     * @param textureLoader Texture loader to load the texture
+     */
+    public abstract void loadTextures(TextureLoader textureLoader);
 
     /**
      * Get the path to the icon of the module
@@ -132,8 +169,34 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
         return moduleRenderer;
     }
 
-    public boolean isRightBound() {
-        return this.rightBound;
+    /**
+     * Create the module renderer or destroy it
+     *
+     * @param enabled New module visible state
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+
+        if (enabled && this.moduleRenderer == null) {
+            // Create module renderer
+            this.moduleRenderer = createRenderer();
+        } else if (!enabled && this.moduleRenderer != null) {
+            // Close the window
+            this.moduleRenderer.close();
+            this.moduleRenderer = null;
+        }
+
+        // Call visibility change
+        this.addon.onModuleVisibilityChanged(this, enabled);
+    }
+
+    /**
+     * Update the right bound state of the module
+     * Right bound is true if the module is on the right side of the target monitor
+     */
+    private void updateRightBoundState() {
+        IScreenBounds targetBounds = this.moduleRenderer.getScreenBoundsOfTargetMonitor();
+        this.rightBound = this.moduleRenderer.getX() + this.width / 2 - targetBounds.getMinX() > (targetBounds.getMaxX() - targetBounds.getMinX()) / 2;
     }
 
     @Override
@@ -165,15 +228,17 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
             // Update module location
             this.moduleRenderer.setLocation(x, y);
 
-            // Update right bound state
-            IScreenBounds targetBounds = this.moduleRenderer.getScreenBoundsOfTargetMonitor();
-            this.rightBound = x + this.width / 2 - targetBounds.getMinX() > (targetBounds.getMaxX() - targetBounds.getMinX()) / 2;
+            updateRightBoundState();
         }
     }
 
     @Override
     public void onMouseReleased(int x, int y, int mouseButton) {
         this.dragging = false;
+    }
+
+    public BufferedImage getIcon() {
+        return this.icon;
     }
 
     public Addon getAddon() {
@@ -184,28 +249,7 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
         return this.enabled;
     }
 
-    /**
-     * Create the module renderer or destroy it
-     *
-     * @param enabled New module visible state
-     */
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-
-        if (enabled && this.moduleRenderer == null) {
-            // Create module renderer
-            this.moduleRenderer = createRenderer();
-        } else if (this.moduleRenderer != null) {
-            // Close the window
-            this.moduleRenderer.close();
-            this.moduleRenderer = null;
-        }
-
-        // Call visibility change
-        this.addon.onModuleVisibilityChanged(this, enabled);
-    }
-
-    public BufferedImage getIcon() {
-        return this.icon;
+    public JsonObject getConfig() {
+        return config;
     }
 }

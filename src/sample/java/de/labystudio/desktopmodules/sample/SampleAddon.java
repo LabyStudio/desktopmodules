@@ -9,6 +9,13 @@ public class SampleAddon extends Addon {
     public void onEnable() throws Exception {
         System.out.println("Sample addon enabled!");
 
+        // Config example
+        if (!this.config.has("flag")) {
+            this.config.addProperty("flag", true);
+
+            System.out.println("This addon started for the first time. My config can remember that!");
+        }
+
         registerModule(SampleModule.class);
     }
 

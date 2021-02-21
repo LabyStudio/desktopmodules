@@ -1,5 +1,6 @@
 package de.labystudio.desktopmodules.core.gui.widget;
 
+import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.module.Module;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
     public static final int WIDGET_HEIGHT = 60;
     private static final Font FONT = new Font("Dubai Medium", Font.PLAIN, 18);
 
-    private final Module module;
+    private final Module<? extends Addon> module;
 
     private final SwitchWidget switchWidget;
 
@@ -26,7 +27,7 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
      *
      * @param module The module to wrap
      */
-    public ModuleWidget(Module module) {
+    public ModuleWidget(Module<? extends Addon> module) {
         this.module = module;
         this.switchWidget = new SwitchWidget(module.isEnabled());
         this.switchWidget.setActionListener(this);
@@ -66,7 +67,8 @@ public class ModuleWidget extends JPanel implements Consumer<Boolean> {
     }
 
     @Override
-    public void accept(Boolean value) {
-        this.module.setEnabled(value);
+    public void accept(Boolean enabled) {
+        Addon addon = this.module.getAddon();
+        addon.setModuleVisibility(this.module, enabled);
     }
 }

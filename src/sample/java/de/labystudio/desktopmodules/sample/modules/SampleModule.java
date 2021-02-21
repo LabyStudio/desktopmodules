@@ -1,6 +1,6 @@
 package de.labystudio.desktopmodules.sample.modules;
 
-import de.labystudio.desktopmodules.core.addon.Addon;
+import com.google.gson.JsonObject;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
 import de.labystudio.desktopmodules.core.renderer.IRenderContext;
@@ -24,8 +24,8 @@ public class SampleModule extends Module<SampleAddon> {
     }
 
     @Override
-    public void onInitialize(SampleAddon addon) {
-        super.onInitialize(addon);
+    public void onInitialize(SampleAddon addon, JsonObject config) {
+        super.onInitialize(addon, config);
 
         System.out.println("Module of " + this.addon.getDisplayName() + " initialized");
     }

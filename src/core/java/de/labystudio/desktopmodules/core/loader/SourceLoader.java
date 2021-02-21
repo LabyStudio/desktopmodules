@@ -1,6 +1,7 @@
 package de.labystudio.desktopmodules.core.loader;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.model.ModelAddonData;
@@ -194,6 +195,7 @@ public class SourceLoader {
         addon.onInitialize(this.desktopModules);
 
         // Enable the addon
+        addon.loadConfig();
         addon.onEnable();
 
         // Register addon
@@ -213,17 +215,18 @@ public class SourceLoader {
     public Module<? extends Addon> loadModule(Addon addon, Class<? extends Module> moduleClass) throws Exception {
         // Create instance of the module
         Module<Addon> module = load(moduleClass);
+        JsonObject moduleConfig = addon.getModuleConfig(module);
 
         // Initialize the module
         module.loadTextures(this.desktopModules.getTextureLoader());
-        module.onInitialize(addon);
+        module.onInitialize(addon, moduleConfig);
 
         // Register the module
         this.modules.add(module);
         addon.getModules().add(module);
 
-        // TODO Read config value
-        module.setEnabled(true);
+        // Load all necessary module values from the config
+        module.onLoadConfig(moduleConfig);
 
         return module;
     }

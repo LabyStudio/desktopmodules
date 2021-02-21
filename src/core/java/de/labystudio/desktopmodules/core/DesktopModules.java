@@ -45,6 +45,9 @@ public class DesktopModules {
 
         // Add system tray
         new TrayHandler(this).init();
+
+        // Create shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
     /**
@@ -90,6 +93,7 @@ public class DesktopModules {
         for (Addon addon : this.sourceLoader.getAddons()) {
             try {
                 addon.onDisable();
+                addon.saveConfig();
             } catch (Exception e) {
                 e.printStackTrace();
             }

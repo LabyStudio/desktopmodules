@@ -57,7 +57,6 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
 
         // Show
         toFront();
-        setVisible(true);
 
         // Listener
         addMouseListener(this);
@@ -78,6 +77,11 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer, Mou
     @Override
     public void requestFrame() {
         repaint();
+
+        // Make visible
+        if (!isVisible()) {
+            setVisible(true);
+        }
 
         // The window will no longer be on top of you click on the taskbar
         if (this.lastToFontCall + TO_FONT_PERIOD_MS < System.currentTimeMillis()) {
