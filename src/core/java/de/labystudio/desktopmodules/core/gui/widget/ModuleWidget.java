@@ -1,7 +1,6 @@
 package de.labystudio.desktopmodules.core.gui.widget;
 
 import de.labystudio.desktopmodules.core.addon.Addon;
-import de.labystudio.desktopmodules.core.gui.util.WinUtils;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
 
@@ -9,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Module list entry item
@@ -42,9 +42,14 @@ public class ModuleWidget extends JPanel {
         TextureLoader textureLoader = module.getAddon().getDesktopModules().getTextureLoader();
         AdvancedWidget advancedWidget = new AdvancedWidget(textureLoader);
         advancedWidget.setActionListener(unused -> {
-            // Open config file in editor
             File file = this.module.getAddon().getConfigFile();
-            WinUtils.openFileEditor(file);
+
+            // Open config file in editor
+            try {
+                Desktop.getDesktop().browse(file.toURI());
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
 
             // Turn off module to avoid conflicts while editing the config
             if (this.module.isEnabled()) {
