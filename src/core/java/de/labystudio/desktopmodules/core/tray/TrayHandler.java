@@ -17,6 +17,8 @@ import java.util.Objects;
  */
 public class TrayHandler implements MouseListener {
 
+    private final PopupMenu popupMenu = fillMenu(new PopupMenu());
+
     private final TrayIcon trayIcon;
     private final DesktopModules desktopModules;
 
@@ -34,6 +36,7 @@ public class TrayHandler implements MouseListener {
         // Load try icon
         InputStream inputStream = desktopModules.getClassLoader().getResourceAsStream("textures/core/tray.png");
         Image trayImage = ImageIO.read(Objects.requireNonNull(inputStream));
+        inputStream.close();
 
         // Register system tray
         this.trayIcon = new TrayIcon(trayImage);
@@ -41,14 +44,22 @@ public class TrayHandler implements MouseListener {
 
     /**
      * Add the try to the system and fill the menu
+     *
      * @throws Exception Can throw an exception when adding to the system tray
      */
     public void init() throws Exception {
-        this.trayIcon.addMouseListener(this);
-        SystemTray.getSystemTray().add(this.trayIcon);
-
         // Create menu
-        this.trayIcon.setPopupMenu(fillMenu(new PopupMenu()));
+        this.trayIcon.setPopupMenu(this.popupMenu);
+        this.trayIcon.addMouseListener(this);
+
+        SystemTray.getSystemTray().add(this.trayIcon);
+    }
+
+    /**
+     * Remove the tray icon from the system tray
+     */
+    public void remove() {
+        SystemTray.getSystemTray().remove(this.trayIcon);
     }
 
     /**
@@ -65,7 +76,7 @@ public class TrayHandler implements MouseListener {
 
         // Exit menu entry
         MenuItem itemExit = new MenuItem("Exit");
-        itemExit.addActionListener(e -> this.desktopModules.shutdown());
+        itemExit.addActionListener(e -> this.desktopModules.shutdownProperly());
         menu.add(itemExit);
 
         return menu;

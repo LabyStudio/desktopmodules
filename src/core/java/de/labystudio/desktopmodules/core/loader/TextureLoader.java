@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.Objects;
 
@@ -26,7 +27,9 @@ public class TextureLoader {
     public BufferedImage loadTexture(String path) {
         try {
             URLClassLoader classLoader = this.desktopModules.getClassLoader();
-            return ImageIO.read(Objects.requireNonNull(classLoader.getResourceAsStream(path)));
+            try (InputStream inputStream = Objects.requireNonNull(classLoader.getResourceAsStream(path))) {
+                return ImageIO.read(inputStream);
+            }
         } catch (IOException exception) {
             exception.printStackTrace();
             return null;

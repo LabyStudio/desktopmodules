@@ -40,7 +40,13 @@ public class GuiSettings extends JDialog implements Runnable {
         // Set icon
         try {
             InputStream inputStream = desktopModules.getClassLoader().getResourceAsStream("textures/core/icon.png");
-            setIconImage(ImageIO.read(Objects.requireNonNull(inputStream)));
+            if (inputStream != null) {
+                try {
+                    setIconImage(ImageIO.read(inputStream));
+                } finally {
+                    inputStream.close();
+                }
+            }
         } catch (Exception error) {
             error.printStackTrace();
         }

@@ -125,7 +125,9 @@ public class SourceLoader {
                 InputStream internalAddonInput = this.desktopModules.getClassLoader().getResourceAsStream(pathToJson);
                 if (internalAddonInput != null) {
                     // Load json file
-                    String addonClassName = GSON.fromJson(new InputStreamReader(internalAddonInput), ModelAddonData.class).main;
+                    InputStreamReader inputStream = new InputStreamReader(internalAddonInput);
+                    String addonClassName = GSON.fromJson(inputStream, ModelAddonData.class).main;
+                    inputStream.close();
 
                     // Close the file
                     internalAddonInput.close();
@@ -160,6 +162,8 @@ public class SourceLoader {
 
             // Get entry point of addon
             addonClassName = GSON.fromJson(new InputStreamReader(inputStream), ModelAddonData.class).main;
+
+            inputStream.close();
         }
 
         // Close the jar file

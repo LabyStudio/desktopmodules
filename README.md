@@ -119,7 +119,7 @@ public class TestModule extends Module<TestAddon> {
 ```
 
 ### Test your addon
-Launch the main class``Start`` with the program parameter ``your.package.name.TestAddon``
+Launch the main class ``Start`` with the program parameter ``your.package.name.TestAddon``
 
 ### Build your addon
 To make it available as a jar file, you have to define the addon class name in the ``/addon.json``
