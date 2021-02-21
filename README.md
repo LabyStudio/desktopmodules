@@ -10,7 +10,7 @@ The modules are displayed over all your programs and games and are freely movabl
 *Feel free to add your addons!*
 
 ## Installation
-1. Download the artifact from the latest [build](https://github.com/LabyStudio/desktopmodules/actions) and extract the jar file.
+1. Download the latest jar file [here](https://github.com/LabyStudio/desktopmodules/releases/).
 2. Place your addon jars in the following directory: ``C:/Users/<name>/AppData/Roaming/DesktopModules/addons/``
 3. Run ``desktopmodules-core.jar`` with java
 
