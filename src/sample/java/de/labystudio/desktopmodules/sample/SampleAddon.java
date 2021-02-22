@@ -1,6 +1,5 @@
 package de.labystudio.desktopmodules.sample;
 
-import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.sample.modules.SampleModule;
 

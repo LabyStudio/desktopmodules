@@ -75,6 +75,7 @@ public abstract class Addon {
             FileReader reader = new FileReader(file);
             JsonElement element = JsonParser.parseReader(reader);
 
+            // Load addon config
             this.config = element.isJsonObject() ? element.getAsJsonObject() : new JsonObject();
 
             reader.close();

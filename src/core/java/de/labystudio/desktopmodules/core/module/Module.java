@@ -18,7 +18,10 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     protected final int width;
     protected final int height;
 
-    protected JsonObject config;
+    /**
+     * Module config
+     */
+    private JsonObject config;
 
     /**
      * The render instance of this module
@@ -104,6 +107,8 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
      * @param config The module config
      */
     public void onLoadConfig(JsonObject config) {
+        this.config = config;
+
         // Load module visibility state
         setEnabled(!config.has("enabled") || config.get("enabled").getAsBoolean());
 
