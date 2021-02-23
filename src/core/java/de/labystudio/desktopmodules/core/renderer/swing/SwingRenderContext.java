@@ -6,6 +6,7 @@ import de.labystudio.desktopmodules.core.renderer.font.StringAlignment;
 import de.labystudio.desktopmodules.core.renderer.font.StringEffect;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -31,28 +32,28 @@ public class SwingRenderContext implements IRenderContext {
         graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     }
 
     @Override
-    public void drawOutline(int left, int top, int right, int bottom, Color color) {
+    public void drawOutline(double left, double top, double right, double bottom, Color color) {
         this.graphics.setColor(color);
-        this.graphics.drawRect(left, top, right - left, bottom - top);
+        this.graphics.draw(new Rectangle2D.Double(left, top, right, bottom));
     }
 
     @Override
-    public void drawRect(int left, int top, int right, int bottom, Color color) {
+    public void drawRect(double left, double top, double right, double bottom, Color color) {
+        drawRectWH(left, top, right - left, bottom - top, color);
+    }
+
+    @Override
+    public void drawRectWH(double x, double y, double width, double height, Color color) {
         this.graphics.setColor(color);
-        this.graphics.fillRect(left, top, right - left, bottom - top);
+        this.graphics.fill(new Rectangle2D.Double(x, y, width, height));
     }
 
     @Override
-    public void drawRectWH(int x, int y, int width, int height, Color color) {
-        this.graphics.setColor(color);
-        this.graphics.fillRect(x, y, width, height);
-    }
-
-    @Override
-    public void drawGradientRect(int left, int top, int right, int bottom, Color from, int fromX, int fromY, Color to, int toX, int toY) {
+    public void drawGradientRect(double left, double top, double right, double bottom, Color from, double fromX, double fromY, Color to, double toX, double toY) {
         this.graphics.setPaint(new GradientPaint(
                 new Point2D.Double(fromX, fromY), from,
                 new Point2D.Double(toX, toY), to));
@@ -60,7 +61,7 @@ public class SwingRenderContext implements IRenderContext {
     }
 
     @Override
-    public void drawString(String text, float x, float y, StringAlignment alignment, StringEffect effect, Color color, Font font) {
+    public void drawString(String text, double x, double y, StringAlignment alignment, StringEffect effect, Color color, Font font) {
         setFont(font);
 
         FontMetrics fontMetrics = this.graphics.getFontMetrics();
@@ -71,12 +72,12 @@ public class SwingRenderContext implements IRenderContext {
         // Draw effects
         if (effect == StringEffect.SHADOW) {
             this.graphics.setColor(Color.BLACK);
-            this.graphics.drawString(text, x - xOffset + 1, y + 1);
+            this.graphics.drawString(text, (float) x - xOffset + 1, (float) y + 1);
         }
 
         // Draw text
         this.graphics.setColor(color);
-        this.graphics.drawString(text, x - xOffset, y);
+        this.graphics.drawString(text, (float) x - xOffset, (float) y);
     }
 
     @Override
@@ -86,13 +87,16 @@ public class SwingRenderContext implements IRenderContext {
     }
 
     @Override
-    public void drawImage(BufferedImage image, int x, int y) {
-        this.graphics.drawImage(image, x, y, null);
+    public void drawImage(BufferedImage image, double x, double y) {
+        drawImage(image, x, y, image.getWidth(), image.getHeight());
     }
 
     @Override
-    public void drawImage(BufferedImage image, int x, int y, int width, int height) {
-        this.graphics.drawImage(image, x, y, width, height, null, null);
+    public void drawImage(BufferedImage image, double x, double y, double width, double height) {
+        AffineTransform transform = new AffineTransform();
+        transform.translate(x, y);
+        transform.scale(width / image.getWidth(), height / image.getHeight());
+        this.graphics.drawImage(image, transform, null);
     }
 
     @Override

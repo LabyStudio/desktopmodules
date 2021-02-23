@@ -23,7 +23,7 @@ public interface IRenderContext {
      * @param bottom Bottom edge position relative to the module position
      * @param color  Color of the outline
      */
-    void drawOutline(int left, int top, int right, int bottom, Color color);
+    void drawOutline(double left, double top, double right, double bottom, Color color);
 
     /**
      * Fill a rectangle using LEFT, TOP, RIGHT and BOTTOM coordinates
@@ -34,7 +34,7 @@ public interface IRenderContext {
      * @param bottom Bottom edge position relative to the module position
      * @param color  Color of the rectangle
      */
-    void drawRect(int left, int top, int right, int bottom, Color color);
+    void drawRect(double left, double top, double right, double bottom, Color color);
 
     /**
      * Fill a rectangle using X, Y, WIDTH and HEIGHT
@@ -45,7 +45,7 @@ public interface IRenderContext {
      * @param height Height of the rectangle
      * @param color
      */
-    void drawRectWH(int x, int y, int width, int height, Color color);
+    void drawRectWH(double x, double y, double width, double height, Color color);
 
     /**
      * Draw gradient rectangle
@@ -61,7 +61,7 @@ public interface IRenderContext {
      * @param toX    X to-color position relative to the module position
      * @param toY    Y to-color position relative to the module position
      */
-    void drawGradientRect(int left, int top, int right, int bottom, Color from, int fromX, int fromY, Color to, int toX, int toY);
+    void drawGradientRect(double left, double top, double right, double bottom, Color from, double fromX, double fromY, Color to, double toX, double toY);
 
     /**
      * Draw a string at given position with given settings
@@ -73,7 +73,7 @@ public interface IRenderContext {
      * @param effect    Text effect option
      * @param color     Text color option
      */
-    void drawString(String text, float x, float y, StringAlignment alignment, StringEffect effect, Color color, Font font);
+    void drawString(String text, double x, double y, StringAlignment alignment, StringEffect effect, Color color, Font font);
 
     /**
      * Get the string width of the given text with the given font style
@@ -91,7 +91,7 @@ public interface IRenderContext {
      * @param x     X position relative to the module position
      * @param y     Y position relative to the module position
      */
-    void drawImage(BufferedImage image, int x, int y);
+    void drawImage(BufferedImage image, double x, double y);
 
 
     /**
@@ -103,7 +103,7 @@ public interface IRenderContext {
      * @param width  Image width
      * @param height Image height
      */
-    void drawImage(BufferedImage image, int x, int y, int width, int height);
+    void drawImage(BufferedImage image, double x, double y, double width, double height);
 
     /**
      * Translate render context by given offset
@@ -131,6 +131,7 @@ public interface IRenderContext {
 
     /**
      * Change the alpha composite of the renderer
+     *
      * @param alpha value from 0.0 to 1.0
      */
     void setAlpha(float alpha);
