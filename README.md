@@ -21,9 +21,6 @@ You can exit the application by right-clicking the tray icon and selecting "Exit
 
 ![settings](.github/assets/settings.png)
 
-## Setup sample module
-Set the program start parameters to ```de.labystudio.desktopmodules.sample.SampleAddon```
-
 ## Create your own addon
 ### Setup gradle
 

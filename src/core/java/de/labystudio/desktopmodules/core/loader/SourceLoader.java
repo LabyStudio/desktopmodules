@@ -6,6 +6,7 @@ import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.model.ModelAddonData;
 import de.labystudio.desktopmodules.core.module.Module;
+import de.labystudio.desktopmodules.sample.SampleAddon;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,6 +73,8 @@ public class SourceLoader {
      * Load all jar files in the addons directory asynchronously
      */
     public void loadAddonsInDirectoryAsync() {
+        boolean addonsFound = false;
+
         // Load addon jar files
         if (this.addonsDirectory.exists() && this.addonsDirectory.isDirectory()) {
 
@@ -82,9 +85,19 @@ public class SourceLoader {
                 // Iterate jar files
                 for (File file : files) {
                     if (file.getName().endsWith(".jar")) {
+                        addonsFound = true;
                         loadAddonAsync(file);
                     }
                 }
+            }
+        }
+
+        // Load sample module if no addons are available
+        if (!addonsFound) {
+            try {
+                registerAddon(SampleAddon.class.getName());
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         }
     }
