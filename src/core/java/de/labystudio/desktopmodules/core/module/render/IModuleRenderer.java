@@ -1,4 +1,4 @@
-package de.labystudio.desktopmodules.core.module.wrapper;
+package de.labystudio.desktopmodules.core.module.render;
 
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
@@ -75,4 +75,13 @@ public interface IModuleRenderer {
      * @return Mouse is over the module
      */
     boolean isMouseOver();
+
+
+    /**
+     * Set the size of the module renderer
+     *
+     * @param width  Width of the renderer
+     * @param height Height of the renderer
+     */
+    void setSize(int width, int height);
 }

@@ -104,4 +104,34 @@ public interface IRenderContext {
      * @param height Image height
      */
     void drawImage(BufferedImage image, int x, int y, int width, int height);
+
+    /**
+     * Translate render context by given offset
+     *
+     * @param x Offset x
+     * @param y Offset y
+     */
+    void translate(double x, double y);
+
+    /**
+     * Scale the render context by given values
+     *
+     * @param x X factor scale
+     * @param y Y factor scale
+     */
+    void scale(double x, double y);
+
+
+    /**
+     * Rotate the render context by given degrees
+     *
+     * @param degrees Amount of rotation in degrees
+     */
+    void rotate(double degrees);
+
+    /**
+     * Change the alpha composite of the renderer
+     * @param alpha value from 0.0 to 1.0
+     */
+    void setAlpha(float alpha);
 }

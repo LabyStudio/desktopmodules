@@ -1,4 +1,4 @@
-package de.labystudio.desktopmodules.core.module.wrapper;
+package de.labystudio.desktopmodules.core.module.render;
 
 import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 

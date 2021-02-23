@@ -227,10 +227,85 @@ public abstract class Addon {
         return moduleObject;
     }
 
+    /**
+     * Gets the json object from the specified parent with the given key
+     *
+     * @param parent The parent object that contains the given key. It will create a new json object if it doesn't exists.
+     * @param key    The key to get or to create
+     * @return Fetched or newly created json object
+     */
+    public static JsonObject getConfigObject(JsonObject parent, String key) {
+        if (!parent.has(key)) {
+            parent.add(key, new JsonObject());
+        }
+        return parent.get(key).getAsJsonObject();
+    }
+
+    /**
+     * Gets the string from the specified parent with the given key or create the entry if it doesn't exists
+     *
+     * @param parent       The parent object that contains the given key. It will create a new string entry if it doesn't exists.
+     * @param key          The key to get or to create
+     * @param defaultValue The default value that will be returned if it doesn't exists
+     * @return Fetched or newly created default string
+     */
+    public static String getConfigValue(JsonObject parent, String key, String defaultValue) {
+        if (parent.has(key)) {
+            return parent.get(key).getAsString();
+        } else {
+            parent.addProperty(key, defaultValue);
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the integer from the specified parent with the given key or create the entry if it doesn't exists
+     *
+     * @param parent       The parent object that contains the given key. It will create a new integer entry if it doesn't exists.
+     * @param key          The key to get or to create
+     * @param defaultValue The default value that will be returned if it doesn't exists
+     * @return Fetched or newly created default integer
+     */
+    public static int getConfigValue(JsonObject parent, String key, int defaultValue) {
+        if (parent.has(key)) {
+            return parent.get(key).getAsInt();
+        } else {
+            parent.addProperty(key, defaultValue);
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the boolean from the specified parent with the given key or create the entry if it doesn't exists
+     *
+     * @param parent       The parent object that contains the given key. It will create a new boolean entry if it doesn't exists.
+     * @param key          The key to get or to create
+     * @param defaultValue The default value that will be returned if it doesn't exists
+     * @return Fetched or newly created default boolean
+     */
+    public static boolean getConfigValue(JsonObject parent, String key, boolean defaultValue) {
+        if (parent.has(key)) {
+            return parent.get(key).getAsBoolean();
+        } else {
+            parent.addProperty(key, defaultValue);
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Core application instance
+     *
+     * @return DesktopModules core instance
+     */
     public DesktopModules getDesktopModules() {
         return desktopModules;
     }
 
+    /**
+     * Get all modules of this addon
+     *
+     * @return Module list
+     */
     public List<Module<? extends Addon>> getModules() {
         return modules;
     }

@@ -54,6 +54,10 @@ public class TestAddon extends Addon {
 
             System.out.println("This addon started for the first time. My config can remember that!");
         }
+
+        // Another config example with default values
+        String startupMessage = getConfigValue(this.config, "startup_message", "Hello World!");
+        System.out.println(startupMessage);
         
         // Register your modules
         registerModule(TestModule.class);
@@ -74,29 +78,30 @@ public class TestAddon extends Addon {
 ```
 
 You can create multiple modules for one addon
+
 ```java
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
-import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
+import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
 import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class TestModule extends Module<TestAddon> {
-    
+
     private BufferedImage testTexture;
 
     public TestModule() {
         super(250, 60); // The fixed size of the module
     }
-    
+
     @Override
     public void loadTextures(TextureLoader textureLoader) {
         this.testTexture = textureLoader.loadTexture("textures/test/test.png"); // Load a texture
     }
-    
+
     @Override
     protected String getIconPath() {
         return "textures/test/test.png"; // The settings icon of the module
@@ -116,7 +121,7 @@ public class TestModule extends Module<TestAddon> {
     public void onRender(IRenderContext context, int width, int height) {
         context.drawRect(0, 0, width - 1, height - 1, new Color(50, 50, 50, 130));
         context.drawImage(this.testTexture, 0, 0, height, height);
-        
+
         // Render your module...
     }
 }

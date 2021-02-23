@@ -3,11 +3,13 @@ package de.labystudio.desktopmodules.core.module;
 import com.google.gson.JsonObject;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
-import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
-import de.labystudio.desktopmodules.core.module.wrapper.IRenderCallback;
+import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
+import de.labystudio.desktopmodules.core.module.render.IRenderCallback;
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 import de.labystudio.desktopmodules.core.renderer.swing.SwingModuleRenderer;
+import de.labystudio.desktopmodules.core.renderer.swing.SwingScreenBounds;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -15,8 +17,8 @@ import java.awt.image.BufferedImage;
  */
 public abstract class Module<T extends Addon> implements IRenderCallback {
 
-    protected final int width;
-    protected final int height;
+    protected int width;
+    protected int height;
 
     /**
      * Module config
@@ -112,13 +114,37 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
         // Load module visibility state
         setEnabled(!config.has("enabled") || config.get("enabled").getAsBoolean());
 
+        // Get target screen bounds
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        IScreenBounds bounds = new SwingScreenBounds(mouseLocation.x, mouseLocation.y);
+
+        // Get center location of the target monitor for the default module position
+        int centerX = bounds.getMinX() + (bounds.getMaxX() - bounds.getMinX()) / 2;
+        int centerY = bounds.getMinY() + (bounds.getMaxY() - bounds.getMinY()) / 2;
+
         // Load module position
-        int x = config.has("x") ? config.get("x").getAsInt() : 0;
-        int y = config.has("y") ? config.get("y").getAsInt() : 0;
+        int x = config.has("x") ? config.get("x").getAsInt() : centerX - this.width / 2;
+        int y = config.has("y") ? config.get("y").getAsInt() : centerY - this.height / 2;
         this.moduleRenderer.setLocation(x, y);
 
         // Update right bound state after changing the location of the module
         updateRightBoundState();
+    }
+
+    /**
+     * Update the size of the module
+     *
+     * @param width  New with of the module
+     * @param height New height of the module
+     */
+    public void updateSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+
+        // Update renderer size
+        if (this.moduleRenderer != null) {
+            this.moduleRenderer.setSize(width, height);
+        }
     }
 
     /**
@@ -232,24 +258,24 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     }
 
     @Override
-    public void onMouseDragged(int offsetX, int offsetY, int mouseButton) {
+    public void onMouseDragged(int x, int y, int mouseButton) {
         if (this.dragging) {
-            int x = this.moduleRenderer.getX() + (offsetX - this.lastMouseClickOffsetX);
-            int y = this.moduleRenderer.getY() + (offsetY - this.lastMouseClickOffsetY);
+            int moduleX = this.moduleRenderer.getX() + (x - this.lastMouseClickOffsetX);
+            int moduleY = this.moduleRenderer.getY() + (y - this.lastMouseClickOffsetY);
 
             // Keep the module in bounds
             IScreenBounds screenBounds = this.moduleRenderer.getScreenBounds();
-            if (x < screenBounds.getMinX())
-                x = screenBounds.getMinX();
-            if (x > screenBounds.getMaxX() - this.moduleRenderer.getWidth())
-                x = screenBounds.getMaxX() - this.moduleRenderer.getWidth();
-            if (y < screenBounds.getMinY())
-                y = screenBounds.getMinY();
-            if (y > screenBounds.getMaxY() - this.moduleRenderer.getHeight())
-                y = screenBounds.getMaxY() - this.moduleRenderer.getHeight();
+            if (moduleX < screenBounds.getMinX())
+                moduleX = screenBounds.getMinX();
+            if (moduleX > screenBounds.getMaxX() - this.moduleRenderer.getWidth())
+                moduleX = screenBounds.getMaxX() - this.moduleRenderer.getWidth();
+            if (moduleY < screenBounds.getMinY())
+                moduleY = screenBounds.getMinY();
+            if (moduleY > screenBounds.getMaxY() - this.moduleRenderer.getHeight())
+                moduleY = screenBounds.getMaxY() - this.moduleRenderer.getHeight();
 
             // Update module location
-            this.moduleRenderer.setLocation(x, y);
+            this.moduleRenderer.setLocation(moduleX, moduleY);
 
             updateRightBoundState();
         }

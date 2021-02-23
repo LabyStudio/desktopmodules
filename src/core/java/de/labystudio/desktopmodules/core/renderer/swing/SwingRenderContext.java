@@ -95,6 +95,26 @@ public class SwingRenderContext implements IRenderContext {
         this.graphics.drawImage(image, x, y, width, height, null, null);
     }
 
+    @Override
+    public void translate(double x, double y) {
+        this.graphics.translate(x, y);
+    }
+
+    @Override
+    public void scale(double x, double y) {
+        this.graphics.scale(x, y);
+    }
+
+    @Override
+    public void rotate(double degrees) {
+        this.graphics.rotate(degrees);
+    }
+
+    @Override
+    public void setAlpha(float alpha) {
+        this.graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(1.0F, alpha)));
+    }
+
     /**
      * Set font of the current context
      */

@@ -4,7 +4,7 @@ import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.SourceLoader;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
-import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
+import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
 import de.labystudio.desktopmodules.core.tray.TrayHandler;
 
 import java.io.File;

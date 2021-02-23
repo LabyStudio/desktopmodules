@@ -14,6 +14,10 @@ public class SampleAddon extends Addon {
             System.out.println("This addon started for the first time. My config can remember that!");
         }
 
+        // Another config example with default values
+        String startupMessage = getConfigValue(this.config, "startup_message", "Hello World!");
+        System.out.println(startupMessage);
+
         registerModule(SampleModule.class);
     }
 

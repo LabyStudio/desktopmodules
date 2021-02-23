@@ -1,7 +1,7 @@
 package de.labystudio.desktopmodules.core.renderer.swing;
 
-import de.labystudio.desktopmodules.core.module.wrapper.IModuleRenderer;
-import de.labystudio.desktopmodules.core.module.wrapper.IRenderCallback;
+import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
+import de.labystudio.desktopmodules.core.module.render.IRenderCallback;
 import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
