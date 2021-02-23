@@ -6,6 +6,7 @@ The modules are displayed over all your programs and games and are freely movabl
 
 ## Available Addons
 - [Spotify](https://github.com/LabyStudio/spotify-addon)
+- [SmartHome](https://github.com/LabyStudio/smarthome-addon) (FritzBox client list and IP-Camera feed)
 
 *Feel free to add your addons!*
 

@@ -31,18 +31,20 @@ public class ModuleWidget extends JPanel {
     public ModuleWidget(Module<? extends Addon> module) {
         this.module = module;
 
+        Addon addon = module.getAddon();
+
         // Create switch widget
         SwitchWidget switchWidget = new SwitchWidget(module.isEnabled());
         switchWidget.setActionListener(enabled -> {
             // Update module visibility
-            this.module.getAddon().setModuleVisibility(this.module, enabled);
+            addon.setModuleVisibility(this.module, enabled);
         });
 
         // Create advanced gear widget
         TextureLoader textureLoader = module.getAddon().getDesktopModules().getTextureLoader();
         AdvancedWidget advancedWidget = new AdvancedWidget(textureLoader);
         advancedWidget.setActionListener(unused -> {
-            File file = this.module.getAddon().getConfigFile();
+            File file = addon.getConfigFile();
 
             // Open config file in editor
             try {
@@ -51,9 +53,11 @@ public class ModuleWidget extends JPanel {
                 exception.printStackTrace();
             }
 
-            // Turn off module to avoid conflicts while editing the config
-            if (this.module.isEnabled()) {
-                this.module.getAddon().setModuleVisibility(this.module, false);
+            // Turn off modules to avoid conflicts while editing the config
+            for (Module<? extends Addon> moduleEntry : addon.getModules()) {
+                if (moduleEntry.isEnabled()) {
+                    addon.setModuleVisibility(moduleEntry, false);
+                }
             }
         });
 
