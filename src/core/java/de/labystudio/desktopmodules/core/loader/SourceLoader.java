@@ -241,8 +241,9 @@ public class SourceLoader {
         addon.getModules().add(module);
 
         // Load all necessary module values from the config
+        boolean hasActiveModules = addon.hasActiveModules();
         module.onLoadConfig(moduleConfig);
-        module.setEnabled(false);
+        addon.onModuleVisibilityChanged(module, module.isEnabled(), hasActiveModules);
 
         return module;
     }
