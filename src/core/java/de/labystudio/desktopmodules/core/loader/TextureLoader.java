@@ -37,6 +37,18 @@ public class TextureLoader {
     }
 
     /**
+     * Load buffered image from resources path
+     *
+     * @param path Resources path
+     * @return Buffered image
+     * @deprecated Renamed to {@link TextureLoader#load(String)}
+     */
+    @Deprecated
+    public BufferedImage loadTexture(String path) {
+        return load(path);
+    }
+
+    /**
      * Load buffered image from resources path with given size
      *
      * @param path   Resources path
@@ -55,6 +67,20 @@ public class TextureLoader {
         g.dispose();
 
         return resized;
+    }
+
+    /**
+     * Load buffered image from resources path with given size
+     *
+     * @param path   Resources path
+     * @param width  Image width
+     * @param height Image height
+     * @return Buffered image
+     * @deprecated Renamed to {@link TextureLoader#load(String, int, int)}
+     */
+    @Deprecated
+    public BufferedImage loadTexture(String path, int width, int height) {
+        return load(path, width, height);
     }
 
 }
