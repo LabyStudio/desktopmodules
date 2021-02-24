@@ -242,6 +242,7 @@ public class SourceLoader {
 
         // Load all necessary module values from the config
         module.onLoadConfig(moduleConfig);
+        module.setEnabled(false);
 
         return module;
     }

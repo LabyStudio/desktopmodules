@@ -56,11 +56,27 @@ public abstract class Addon {
      * Called on a visibility change of a module of this addon.
      * The default implementation will save the config
      *
-     * @param module  The module that changed the visibility
-     * @param enabled The new visibility state of the module
+     * @param module           The module that changed the visibility
+     * @param enabled          The new visibility state of the module
+     * @param hadActiveModules Is true when there was an active module of this addon before enabling this module
      */
-    public void onModuleVisibilityChanged(Module<? extends Addon> module, boolean enabled) {
-        // No implementation
+    public void onModuleVisibilityChanged(Module<? extends Addon> module, boolean enabled, boolean hadActiveModules) {
+        boolean hasActiveModules = hasActiveModules();
+
+        // Enable or disable addon (if all modules are disabled for example)
+        if (hadActiveModules != hasActiveModules) {
+            try {
+                if (hasActiveModules) {
+                    // Enable addon when at least one modules is enable
+                    onEnable();
+                } else {
+                    // Disable addon when all modules are disabled
+                    onDisable();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

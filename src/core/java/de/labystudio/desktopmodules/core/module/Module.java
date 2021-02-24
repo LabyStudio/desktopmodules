@@ -142,11 +142,11 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
      * @param enabled Module visibility state
      */
     public void setEnabled(boolean enabled) {
-        boolean prevHasActiveModules = this.addon.hasActiveModules();
+        boolean hadActiveModules = this.addon.hasActiveModules();
 
         try {
             // Load entire config first
-            if (!prevHasActiveModules) {
+            if (!hadActiveModules) {
                 this.addon.loadConfig();
                 onLoadConfig(this.addon.getModuleConfig(this));
             }
@@ -163,22 +163,7 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
         }
 
         // Call visibility change
-        this.addon.onModuleVisibilityChanged(this, enabled);
-
-        // Enable or disable addon (if all modules are disabled for example)
-        if (prevHasActiveModules != this.addon.hasActiveModules()) {
-            try {
-                if (this.addon.hasActiveModules()) {
-                    // Enable addon when at least one modules is enable
-                    this.addon.onEnable();
-                } else {
-                    // Disable addon when all modules are disabled
-                    this.addon.onDisable();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        this.addon.onModuleVisibilityChanged(this, enabled, hadActiveModules);
     }
 
     /**
