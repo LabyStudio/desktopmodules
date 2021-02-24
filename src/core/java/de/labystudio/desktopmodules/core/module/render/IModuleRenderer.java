@@ -15,9 +15,11 @@ public interface IModuleRenderer {
     void requestFrame();
 
     /**
-     * Close the window
+     * Change the visibility of the window
+     *
+     * @param visible Window is visible
      */
-    void close();
+    void setVisible(boolean visible);
 
     /**
      * Get absolute module x position

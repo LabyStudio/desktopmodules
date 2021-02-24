@@ -90,13 +90,6 @@ public abstract class Addon {
      * @throws IOException File write exception
      */
     public void saveConfig() throws IOException {
-        // Store necessary values of all modules
-        for (Module<? extends Addon> module : this.modules) {
-            if (module.isEnabled()) {
-                module.onSaveConfig(module.getConfig());
-            }
-        }
-
         File file = getConfigFile();
 
         // Write to file
@@ -106,36 +99,6 @@ public abstract class Addon {
         // Flush and close
         writer.flush();
         writer.close();
-    }
-
-
-    /**
-     * Change the visibility of a module. It will also handle the loading and saving of the module config.
-     *
-     * @param module  Module to enable or disable
-     * @param enabled New visibility state
-     */
-    public void setModuleVisibility(Module<? extends Addon> module, Boolean enabled) {
-        try {
-            if (enabled) {
-                // Load the config of the entire addon to get the new module config (Loading from file)
-                loadConfig();
-
-                // Load config when changing the state to enabled (It's not actually loading the file)
-                module.onLoadConfig(getModuleConfig(module));
-
-                // Save config after creating the module renderer (Writing to file)
-                saveConfig();
-            } else {
-                // Save config before destroying the module renderer (Writing to file)
-                saveConfig();
-
-                // Disable module
-                module.setEnabled(false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -179,8 +142,8 @@ public abstract class Addon {
      * @return The loaded module
      * @throws Exception
      */
-    public Module<? extends Addon> registerModule(Class<? extends Module> moduleClass) throws Exception {
-        return this.desktopModules.getSourceLoader().loadModule(this, moduleClass);
+    public <T> T registerModule(Class<? extends Module> moduleClass) throws Exception {
+        return (T) this.desktopModules.getSourceLoader().loadModule(this, moduleClass);
     }
 
     /**

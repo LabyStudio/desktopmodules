@@ -6,6 +6,8 @@ import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
 import de.labystudio.desktopmodules.core.module.render.IRenderCallback;
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
+import de.labystudio.desktopmodules.core.renderer.font.Font;
+import de.labystudio.desktopmodules.core.renderer.font.FontStyle;
 import de.labystudio.desktopmodules.core.renderer.swing.SwingModuleRenderer;
 import de.labystudio.desktopmodules.core.renderer.swing.SwingScreenBounds;
 
@@ -16,6 +18,8 @@ import java.awt.image.BufferedImage;
  * @author LabyStudio
  */
 public abstract class Module<T extends Addon> implements IRenderCallback {
+
+    protected final Font DEFAULT_FONT = new Font("Dialog", FontStyle.PLAIN, 12);
 
     protected int width;
     protected int height;
@@ -86,7 +90,8 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
         this.addon = addon;
         this.config = config;
 
-        this.icon = addon.getDesktopModules().getTextureLoader().loadTexture(getIconPath());
+        this.icon = addon.getDesktopModules().getTextureLoader().load(getIconPath());
+        this.moduleRenderer = createRenderer();
     }
 
     /**
@@ -112,7 +117,7 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
         this.config = config;
 
         // Load module visibility state
-        setEnabled(!config.has("enabled") || config.get("enabled").getAsBoolean());
+        this.moduleRenderer.setVisible(this.enabled = (!config.has("enabled") || config.get("enabled").getAsBoolean()));
 
         // Get target screen bounds
         Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
@@ -132,92 +137,29 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     }
 
     /**
-     * Update the size of the module
+     * Change the visibility of a module. It will also handle the loading and saving of the module config.
      *
-     * @param width  New with of the module
-     * @param height New height of the module
-     */
-    public void updateSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-
-        // Update renderer size
-        if (this.moduleRenderer != null) {
-            this.moduleRenderer.setSize(width, height);
-        }
-    }
-
-    /**
-     * Create renderer for this module
-     *
-     * @return The created implementation for the model render interface
-     */
-    protected IModuleRenderer createRenderer() {
-        return new SwingModuleRenderer(this, this.width, this.height);
-    }
-
-    /**
-     * Load all texture of this module
-     *
-     * @param textureLoader Texture loader to load the texture
-     */
-    public abstract void loadTextures(TextureLoader textureLoader);
-
-    /**
-     * Get the path to the icon of the module
-     *
-     * @return Resource path of the module icon
-     */
-    protected abstract String getIconPath();
-
-    /**
-     * Get display name of the module
-     *
-     * @return Module name for the settings gui
-     */
-    public abstract String getDisplayName();
-
-    /**
-     * Called on each application tick
-     */
-    public abstract void onTick();
-
-    /**
-     * Is mouse over a rendered part of the module
-     *
-     * @return Mouse is over the module
-     */
-    public boolean isMouseOver() {
-        return this.moduleRenderer != null && this.moduleRenderer.isMouseOver();
-    }
-
-    /**
-     * Get module renderer interface of module
-     *
-     * @return The module renderer interface
-     */
-    public IModuleRenderer getModuleRenderer() {
-        return moduleRenderer;
-    }
-
-    /**
-     * Create the module renderer or destroy it
-     *
-     * @param enabled New module visible state
+     * @param enabled Module visibility state
      */
     public void setEnabled(boolean enabled) {
         boolean prevHasActiveModules = this.addon.hasActiveModules();
 
-        // Update enabled state of this module
-        this.enabled = enabled;
+        try {
+            // Load entire config first
+            if (!prevHasActiveModules) {
+                this.addon.loadConfig();
+                onLoadConfig(this.addon.getModuleConfig(this));
+            }
 
-        if (enabled && this.moduleRenderer == null) {
-            // Create module renderer
-            this.moduleRenderer = createRenderer();
-        } else if (!enabled && this.moduleRenderer != null) {
-            // Close the window
-            this.moduleRenderer.close();
-            this.moduleRenderer = null;
+            // Update enabled state of this module
+            this.enabled = enabled;
+            this.moduleRenderer.setVisible(enabled);
+
+            // Save the change
+            onSaveConfig(this.config);
+            this.addon.saveConfig();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // Call visibility change
@@ -237,6 +179,20 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Update the size of the module
+     *
+     * @param width  New with of the module
+     * @param height New height of the module
+     */
+    public void updateSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+
+        // Update renderer size
+        this.moduleRenderer.setSize(width, height);
     }
 
     /**
@@ -279,6 +235,59 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
 
             updateRightBoundState();
         }
+    }
+
+    /**
+     * Create renderer for this module
+     *
+     * @return The created implementation for the model render interface
+     */
+    protected IModuleRenderer createRenderer() {
+        return new SwingModuleRenderer(this, this.width, this.height);
+    }
+
+    /**
+     * Called on each application tick
+     */
+    public abstract void onTick();
+
+    /**
+     * Load all texture of this module
+     *
+     * @param textureLoader Texture loader to load the texture
+     */
+    public abstract void loadTextures(TextureLoader textureLoader);
+
+    /**
+     * Get the path to the icon of the module
+     *
+     * @return Resource path of the module icon
+     */
+    protected abstract String getIconPath();
+
+    /**
+     * Get display name of the module
+     *
+     * @return Module name for the settings gui
+     */
+    public abstract String getDisplayName();
+
+    /**
+     * Is mouse over a rendered part of the module
+     *
+     * @return Mouse is over the module
+     */
+    public boolean isMouseOver() {
+        return this.moduleRenderer.isMouseOver();
+    }
+
+    /**
+     * Get module renderer interface of module
+     *
+     * @return The module renderer interface
+     */
+    public IModuleRenderer getModuleRenderer() {
+        return moduleRenderer;
     }
 
     @Override

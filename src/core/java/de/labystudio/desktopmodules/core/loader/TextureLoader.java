@@ -24,7 +24,7 @@ public class TextureLoader {
      * @param path Resources path
      * @return Buffered image
      */
-    public BufferedImage loadTexture(String path) {
+    public BufferedImage load(String path) {
         try {
             URLClassLoader classLoader = this.desktopModules.getClassLoader();
             try (InputStream inputStream = Objects.requireNonNull(classLoader.getResourceAsStream(path))) {
@@ -44,8 +44,8 @@ public class TextureLoader {
      * @param height Image height
      * @return Buffered image
      */
-    public BufferedImage loadTexture(String path, int width, int height) {
-        BufferedImage image = loadTexture(path);
+    public BufferedImage load(String path, int width, int height) {
+        BufferedImage image = load(path);
 
         // Resize
         BufferedImage resized = new BufferedImage(width, height, image.getType());

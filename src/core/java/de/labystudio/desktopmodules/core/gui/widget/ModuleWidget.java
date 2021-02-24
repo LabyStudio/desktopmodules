@@ -35,10 +35,8 @@ public class ModuleWidget extends JPanel {
 
         // Create switch widget
         SwitchWidget switchWidget = new SwitchWidget(module.isEnabled());
-        switchWidget.setActionListener(enabled -> {
-            // Update module visibility
-            addon.setModuleVisibility(this.module, enabled);
-        });
+        // Update module visibility
+        switchWidget.setActionListener(this.module::setEnabled);
 
         // Create advanced gear widget
         TextureLoader textureLoader = module.getAddon().getDesktopModules().getTextureLoader();
@@ -56,7 +54,7 @@ public class ModuleWidget extends JPanel {
             // Turn off modules to avoid conflicts while editing the config
             for (Module<? extends Addon> moduleEntry : addon.getModules()) {
                 if (moduleEntry.isEnabled()) {
-                    addon.setModuleVisibility(moduleEntry, false);
+                    moduleEntry.setEnabled(false);
                 }
             }
         });

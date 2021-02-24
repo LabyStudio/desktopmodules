@@ -93,11 +93,6 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
     }
 
     @Override
-    public void close() {
-        dispose();
-    }
-
-    @Override
     public void setLocation(int x, int y) {
         super.setLocation(x, y);
 

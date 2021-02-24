@@ -76,6 +76,21 @@ public interface IRenderContext {
     void drawString(String text, double x, double y, StringAlignment alignment, StringEffect effect, Color color, Font font);
 
     /**
+     * Draw a string with an x offset from the right or left side depending on the alignment.
+     * If the string is left-aligned, then the x offset applies from the left,
+     * if it is a right-aligned string, then it applies from the right.
+     *
+     * @param text       Text to render
+     * @param width      The width of the module
+     * @param offsetX    X position relative to the module position and depending on the alignment
+     * @param y          Y position relative to the module position
+     * @param rightBound String alignment from right or left
+     * @param effect     Text effect option
+     * @param color      Text color option
+     */
+    void drawString(String text, double width, double offsetX, double y, boolean rightBound, StringEffect effect, Color color, Font font);
+
+    /**
      * Get the string width of the given text with the given font style
      *
      * @param text The string

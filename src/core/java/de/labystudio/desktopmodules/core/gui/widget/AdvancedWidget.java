@@ -18,7 +18,7 @@ public class AdvancedWidget extends JPanel implements MouseListener {
     private boolean mouseOver;
 
     public AdvancedWidget(TextureLoader textureLoader) {
-        this.textureGear = textureLoader.loadTexture("textures/core/gear.png");
+        this.textureGear = textureLoader.load("textures/core/gear.png");
 
         // Widget size
         setBorder(new EmptyBorder(8, 8, 8, 8));

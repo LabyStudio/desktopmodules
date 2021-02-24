@@ -26,7 +26,7 @@ You can exit the application by right-clicking the tray icon and selecting "Exit
 
 ```groovy
 dependencies {
-    implementation 'com.github.LabyStudio:desktopmodules:2.3'
+    implementation 'com.github.LabyStudio:desktopmodules:2.4'
 }
 
 allprojects {
@@ -96,21 +96,6 @@ public class TestModule extends Module<TestAddon> {
     }
 
     @Override
-    public void loadTextures(TextureLoader textureLoader) {
-        this.testTexture = textureLoader.loadTexture("textures/test/test.png"); // Load a texture
-    }
-
-    @Override
-    protected String getIconPath() {
-        return "textures/test/test.png"; // The settings icon of the module
-    }
-
-    @Override
-    public String getDisplayName() {
-        return "Test Module"; // The setting name of the module
-    }
-
-    @Override
     public void onTick() {
         // Do backend stuff..
     }
@@ -121,6 +106,21 @@ public class TestModule extends Module<TestAddon> {
         context.drawImage(this.testTexture, 0, 0, height, height);
 
         // Render your module...
+    }
+    
+    @Override
+    public void loadTextures(TextureLoader textureLoader) {
+        this.testTexture = textureLoader.loadTexture("textures/test/test.png"); // Load a texture
+    }
+    
+    @Override
+    protected String getIconPath() {
+        return "textures/test/test.png"; // The settings icon of the module
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "Test Module"; // The setting name of the module
     }
 }
 ```

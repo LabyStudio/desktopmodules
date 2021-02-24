@@ -31,7 +31,7 @@ public class TrayHandler implements MouseListener {
         this.desktopModules = desktopModules;
 
         // Load tray icon
-        Image trayImage = desktopModules.getTextureLoader().loadTexture("textures/core/tray.png");
+        Image trayImage = desktopModules.getTextureLoader().load("textures/core/tray.png");
 
         // Register system tray
         this.trayIcon = new TrayIcon(trayImage);

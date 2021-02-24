@@ -32,7 +32,7 @@ public class SampleModule extends Module<SampleAddon> {
 
     @Override
     public void loadTextures(TextureLoader textureLoader) {
-        this.sampleTexture = textureLoader.loadTexture("textures/sample/sample.png");
+        this.sampleTexture = textureLoader.load("textures/sample/sample.png");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SampleModule extends Module<SampleAddon> {
     @Override
     public void onRender(IRenderContext context, int width, int height) {
         context.drawRect(0, 0, width - 1, height - 1, new Color(50, 50, 50, 130));
-        context.drawString("Sample Module!", this.rightBound ? 20 : width - 20, 38, this.rightBound ? StringAlignment.LEFT : StringAlignment.RIGHT, StringEffect.NONE, Color.WHITE, SAMPLE_FONT);
+        context.drawString("Sample Module!", width, height + 20, 38, this.rightBound, StringEffect.NONE, Color.WHITE, SAMPLE_FONT);
         context.drawImage(this.sampleTexture, this.rightBound ? width - height : 0, 0, height, height);
     }
 }

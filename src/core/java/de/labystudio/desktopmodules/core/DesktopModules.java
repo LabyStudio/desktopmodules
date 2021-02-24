@@ -105,6 +105,12 @@ public class DesktopModules {
 
         // Disable all addons
         for (Addon addon : this.sourceLoader.getAddons()) {
+
+            // Store necessary values of all modules
+            for (Module<? extends Addon> module : addon.getModules()) {
+                module.onSaveConfig(module.getConfig());
+            }
+
             try {
                 addon.onDisable();
                 addon.saveConfig();
@@ -131,7 +137,7 @@ public class DesktopModules {
         for (Module<? extends Addon> module : this.sourceLoader.getModules()) {
             IModuleRenderer moduleRenderer = module.getModuleRenderer();
             if (moduleRenderer != null) {
-                moduleRenderer.close();
+                moduleRenderer.setVisible(false);
             }
         }
 

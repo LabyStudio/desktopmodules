@@ -81,6 +81,11 @@ public class SwingRenderContext implements IRenderContext {
     }
 
     @Override
+    public void drawString(String text, double width, double offsetX, double y, boolean rightBound, StringEffect effect, Color color, Font font) {
+        drawString(text, rightBound ? width - offsetX : offsetX, y, StringAlignment.from(rightBound), effect, color, font);
+    }
+
+    @Override
     public int getStringWidth(String text, Font font) {
         setFont(font);
         return this.graphics.getFontMetrics().stringWidth(text);
