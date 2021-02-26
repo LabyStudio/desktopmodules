@@ -77,6 +77,13 @@ public abstract class Addon {
                 e.printStackTrace();
             }
         }
+
+        // Call module enable and disable event
+        if(enabled) {
+            module.onEnable();
+        } else {
+            module.onDisable();
+        }
     }
 
     /**

@@ -11,7 +11,8 @@ import de.labystudio.desktopmodules.core.renderer.font.FontStyle;
 import de.labystudio.desktopmodules.core.renderer.swing.SwingModuleRenderer;
 import de.labystudio.desktopmodules.core.renderer.swing.SwingScreenBounds;
 
-import java.awt.*;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
@@ -92,6 +93,20 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
 
         this.icon = addon.getDesktopModules().getTextureLoader().load(getIconPath());
         this.moduleRenderer = createRenderer();
+    }
+
+    /**
+     * Called when enabling the module
+     */
+    public void onEnable() {
+        // No implementation
+    }
+
+    /**
+     * Called when disabling the module
+     */
+    public void onDisable() {
+        // No implementation
     }
 
     /**
@@ -234,7 +249,9 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     /**
      * Called on each application tick
      */
-    public abstract void onTick();
+    public void onTick() {
+        // No implementation
+    }
 
     /**
      * Load all texture of this module
