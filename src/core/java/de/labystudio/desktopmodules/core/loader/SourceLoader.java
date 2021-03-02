@@ -55,18 +55,13 @@ public class SourceLoader {
         this.desktopModules = desktopModules;
         this.addonsDirectory = new File(workingDirectory, "addons");
 
-        // Get add URL method to add files to the class loader
-        this.addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-        this.addURL.setAccessible(true);
-    }
-
-    /**
-     * Create addons folder if doesn't exists
-     */
-    public void setupDirectory() {
         if (!this.addonsDirectory.exists()) {
             this.addonsDirectory.mkdir();
         }
+
+        // Get add URL method to add files to the class loader
+        this.addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+        this.addURL.setAccessible(true);
     }
 
     /**

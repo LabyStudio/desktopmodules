@@ -6,6 +6,7 @@ import de.labystudio.desktopmodules.core.gui.GuiSettings;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 /**
  * Tray icon to manage the application
@@ -68,6 +69,20 @@ public class TrayHandler implements MouseListener {
         MenuItem itemSettings = new MenuItem("Settings");
         itemSettings.addActionListener(e -> openSettings());
         menu.add(itemSettings);
+
+        // Open directory menu entry
+        MenuItem itemAddonsDirectory = new MenuItem("Open addons directory");
+        itemAddonsDirectory.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().browse(this.desktopModules.getSourceLoader().getAddonsDirectory().toURI());
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        });
+        menu.add(itemAddonsDirectory);
+
+        // Separator
+        menu.addSeparator();
 
         // Exit menu entry
         MenuItem itemExit = new MenuItem("Exit");

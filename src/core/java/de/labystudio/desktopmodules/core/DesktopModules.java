@@ -5,6 +5,7 @@ import de.labystudio.desktopmodules.core.loader.SourceLoader;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
 import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
+import de.labystudio.desktopmodules.core.os.WorkingDirectory;
 import de.labystudio.desktopmodules.core.tray.TrayHandler;
 
 import java.io.File;
@@ -20,14 +21,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class DesktopModules {
 
-    public static final boolean OS_WIN = System.getProperty("os.name").toLowerCase().contains("win");
     public static final int TICKS_PER_SECOND = 20;
 
     private final Thread SHUTDOWN_HOOK = new Thread(this::shutdown);
 
     private final URLClassLoader classLoader;
 
-    private final File workingDirectory = new File(System.getenv("APPDATA") + "/DesktopModules");
+    private final File workingDirectory = WorkingDirectory.get("DesktopModules");
 
     private final SourceLoader sourceLoader = new SourceLoader(this, this.workingDirectory);
     private final TextureLoader textureLoader = new TextureLoader(this);
@@ -43,13 +43,6 @@ public class DesktopModules {
      */
     public DesktopModules(URLClassLoader classLoader) throws Exception {
         this.classLoader = classLoader;
-
-        // Create working directory
-        if (!this.workingDirectory.exists()) {
-            this.workingDirectory.mkdir();
-
-            this.sourceLoader.setupDirectory();
-        }
 
         // Add system tray
         this.tray = new TrayHandler(this);
