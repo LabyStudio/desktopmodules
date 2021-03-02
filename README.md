@@ -26,7 +26,7 @@ You can exit the application by right-clicking the tray icon and selecting "Exit
 
 ```groovy
 dependencies {
-    implementation 'com.github.LabyStudio:desktopmodules:2.4'
+    implementation 'com.github.LabyStudio:desktopmodules:2.5'
 }
 
 allprojects {
