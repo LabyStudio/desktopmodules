@@ -40,6 +40,7 @@ public class DesktopModules {
      * Create an instance of the DesktopModules application and load all addons using the given classloader
      *
      * @param classLoader Class loader to use for the addons
+     * @throws Exception exception during initialization of the class
      */
     public DesktopModules(URLClassLoader classLoader) throws Exception {
         this.classLoader = classLoader;

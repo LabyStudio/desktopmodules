@@ -1,10 +1,18 @@
 package de.labystudio.desktopmodules.core.addon;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.module.Module;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -30,6 +38,7 @@ public abstract class Addon {
      * Don't register any modules here!
      *
      * @param desktopModules DesktopModules core instance
+     * @throws Exception Possible exception during pre initialization
      */
     public void onPreInitialize(DesktopModules desktopModules) throws Exception {
         this.desktopModules = desktopModules;
@@ -39,16 +48,22 @@ public abstract class Addon {
      * Called when loading the addon classes into the application.
      * This event has access to the config object of the addon.
      * Register your modules in this event!
+     *
+     * @throws Exception exception during initialization
      */
     public abstract void onInitialize() throws Exception;
 
     /**
      * Called when enabling on of your modules
+     *
+     * @throws Exception exception during enable
      */
     public abstract void onEnable() throws Exception;
 
     /**
      * Called when all modules are disabled
+     *
+     * @throws Exception exception during disable
      */
     public abstract void onDisable() throws Exception;
 
@@ -79,7 +94,7 @@ public abstract class Addon {
         }
 
         // Call module enable and disable event
-        if(enabled) {
+        if (enabled) {
             module.onEnable();
         } else {
             module.onDisable();
@@ -162,8 +177,9 @@ public abstract class Addon {
      * Register a module for this addon
      *
      * @param moduleClass The class of the module to register
+     * @param <T> The addon class of the module
      * @return The loaded module
-     * @throws Exception
+     * @throws Exception module loading exception
      */
     public <T> T registerModule(Class<? extends Module> moduleClass) throws Exception {
         return (T) this.desktopModules.getSourceLoader().loadModule(this, moduleClass);

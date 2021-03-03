@@ -4,7 +4,7 @@ import de.labystudio.desktopmodules.core.renderer.font.Font;
 import de.labystudio.desktopmodules.core.renderer.font.StringAlignment;
 import de.labystudio.desktopmodules.core.renderer.font.StringEffect;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
@@ -43,7 +43,7 @@ public interface IRenderContext {
      * @param y      Top edge position relative to the module position
      * @param width  Width of the rectangle
      * @param height Height of the rectangle
-     * @param color
+     * @param color  Color of the rectangle
      */
     void drawRectWH(double x, double y, double width, double height, Color color);
 
@@ -72,6 +72,7 @@ public interface IRenderContext {
      * @param alignment Text alignment option
      * @param effect    Text effect option
      * @param color     Text color option
+     * @param font      The font of the text
      */
     void drawString(String text, double x, double y, StringAlignment alignment, StringEffect effect, Color color, Font font);
 
@@ -87,6 +88,7 @@ public interface IRenderContext {
      * @param rightBound String alignment from right or left
      * @param effect     Text effect option
      * @param color      Text color option
+     * @param font       The font of the text
      */
     void drawString(String text, double width, double offsetX, double y, boolean rightBound, StringEffect effect, Color color, Font font);
 

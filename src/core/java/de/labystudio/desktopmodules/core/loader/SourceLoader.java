@@ -50,6 +50,7 @@ public class SourceLoader {
      *
      * @param desktopModules   Main instance for texture loader and class loader
      * @param workingDirectory Home directory of the application to load the addons folder
+     * @throws NoSuchMethodException exception caused by finding the add URL method of the class loader
      */
     public SourceLoader(DesktopModules desktopModules, File workingDirectory) throws NoSuchMethodException {
         this.desktopModules = desktopModules;
@@ -220,7 +221,7 @@ public class SourceLoader {
      * @param addon       Addon of the module
      * @param moduleClass Module class to load
      * @return The loaded module instance
-     * @throws Exception
+     * @throws Exception exception during module loading
      */
     public Module<? extends Addon> loadModule(Addon addon, Class<? extends Module> moduleClass) throws Exception {
         // Create instance of the module
