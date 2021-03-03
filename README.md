@@ -25,14 +25,12 @@ You can exit the application by right-clicking the tray icon and selecting "Exit
 ### Setup gradle
 
 ```groovy
-dependencies {
-    implementation 'com.github.LabyStudio:desktopmodules:2.5'
+repositories {
+    maven { url 'https://jitpack.io' }
 }
 
-allprojects {
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
+dependencies {
+    implementation 'com.github.LabyStudio:desktopmodules:2.5'
 }
 ```
 
