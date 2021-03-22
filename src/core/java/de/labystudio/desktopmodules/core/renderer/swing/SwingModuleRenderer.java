@@ -5,9 +5,15 @@ import de.labystudio.desktopmodules.core.module.render.IRenderCallback;
 import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JDialog;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 /**
  * Swing implementation of the module renderer
@@ -29,6 +35,8 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
     private long lastToFontCall = -1L;
 
     private boolean mouseOver;
+    private int mouseX;
+    private int mouseY;
 
     /**
      * Create new swing module renderer
@@ -71,6 +79,7 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
         ((SwingRenderContext) this.renderContext).updateGraphics((Graphics2D) g);
 
         // Call render callback
+        this.renderCallback.onRender(this.renderContext, this.width, this.height, this.mouseX, this.mouseY);
         this.renderCallback.onRender(this.renderContext, this.width, this.height);
     }
 
@@ -131,13 +140,17 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent event) {
         this.mouseOver = true;
+        this.mouseX = event.getX();
+        this.mouseY = event.getY();
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent event) {
         this.mouseOver = false;
+        this.mouseX = event.getX();
+        this.mouseY = event.getY();
     }
 
     @Override
@@ -151,7 +164,8 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        // Unused
+    public void mouseMoved(MouseEvent event) {
+        this.mouseX = event.getX();
+        this.mouseY = event.getY();
     }
 }

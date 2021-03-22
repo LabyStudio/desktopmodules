@@ -15,7 +15,20 @@ public interface IRenderCallback {
      * @param context Render context of the module renderer
      * @param width   Module width
      * @param height  Module height
+     * @param mouseX  Mouse x position relative to the module location
+     * @param mouseY  Mouse y position relative to the module location
      */
+    void onRender(IRenderContext context, int width, int height, int mouseX, int mouseY);
+
+    /**
+     * Module render callback.
+     *
+     * @param context Render context of the module renderer
+     * @param width   Module width
+     * @param height  Module height
+     * @deprecated use {@link IRenderCallback#onRender(IRenderContext, int, int, int, int)}
+     */
+    @Deprecated
     void onRender(IRenderContext context, int width, int height);
 
     /**

@@ -5,6 +5,7 @@ import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
 import de.labystudio.desktopmodules.core.module.render.IRenderCallback;
+import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 import de.labystudio.desktopmodules.core.renderer.font.Font;
 import de.labystudio.desktopmodules.core.renderer.font.FontStyle;
@@ -300,6 +301,17 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     @Override
     public void onMouseScroll(int x, int y, int scrollAmount) {
         // No implementation
+    }
+
+    @Deprecated
+    @Override
+    public void onRender(IRenderContext context, int width, int height) {
+        // Deprecated
+    }
+
+    @Override
+    public void onRender(IRenderContext context, int width, int height, int mouseX, int mouseY) {
+        // Implementation in Module class will be removed in future versions
     }
 
     public BufferedImage getIcon() {
