@@ -55,10 +55,13 @@ public class DesktopModules {
 
     /**
      * Initialize the application
+     * @param loadAddons Scan addons directory and load all jars
      */
-    public void init() {
+    public void init( boolean loadAddons ) {
         // Load all addons
-        this.sourceLoader.loadAddonsInDirectoryAsync();
+        if(loadAddons) {
+            this.sourceLoader.loadAddonsInDirectoryAsync();
+        }
 
         // Start render thread
         this.tickTask = Executors.newScheduledThreadPool(1)

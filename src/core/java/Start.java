@@ -1,6 +1,6 @@
 import de.labystudio.desktopmodules.core.DesktopModules;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -25,14 +25,14 @@ public class Start {
         // Set system look
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        // Create and initialize application
+        // Create application
         DesktopModules desktopModules = new DesktopModules(classLoader);
-        desktopModules.init();
 
         // Load internal addon
-        if (args.length != 0) {
-            desktopModules.getSourceLoader().registerAddon(args[0]);
-        }
+        boolean loadAddons = args.length == 0 || desktopModules.getSourceLoader().registerAddon(args[0]) == null;
+
+        // Initialize core application
+        desktopModules.init(loadAddons);
     }
 
 

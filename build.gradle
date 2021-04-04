@@ -18,8 +18,19 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.6'
 }
 
-sourceSets.main.java.srcDirs = ["src/core/java", "src/sample/java"]
-sourceSets.main.resources.srcDirs = ["src/core/resources", "src/sample/resources"]
+sourceSets {
+    main {
+        java {
+            srcDir 'src/core/java'
+            srcDir 'src/sample/java'
+        }
+
+        resources {
+            srcDir 'src/core/resources'
+            srcDir 'src/sample/resources'
+        }
+    }
+}
 
 jar {
     manifest {
