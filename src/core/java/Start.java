@@ -1,8 +1,8 @@
 import de.labystudio.desktopmodules.core.DesktopModules;
+import de.labystudio.desktopmodules.core.loader.SourceClassLoader;
 
 import javax.swing.UIManager;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 /**
  * Entry point of the core
@@ -19,7 +19,7 @@ public class Start {
      */
     public static void main(String[] args) throws Exception {
         // Create URL class loader for this application
-        URLClassLoader classLoader = new URLClassLoader(new URL[0], ClassLoader.getSystemClassLoader());
+        SourceClassLoader classLoader = new SourceClassLoader(new URL[0], ClassLoader.getSystemClassLoader());
         Thread.currentThread().setContextClassLoader(classLoader);
 
         // Set system look

@@ -1,6 +1,7 @@
 package de.labystudio.desktopmodules.core;
 
 import de.labystudio.desktopmodules.core.addon.Addon;
+import de.labystudio.desktopmodules.core.loader.SourceClassLoader;
 import de.labystudio.desktopmodules.core.loader.SourceLoader;
 import de.labystudio.desktopmodules.core.loader.TextureLoader;
 import de.labystudio.desktopmodules.core.module.Module;
@@ -9,7 +10,6 @@ import de.labystudio.desktopmodules.core.os.WorkingDirectory;
 import de.labystudio.desktopmodules.core.tray.TrayHandler;
 
 import java.io.File;
-import java.net.URLClassLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +25,7 @@ public class DesktopModules {
 
     private final Thread SHUTDOWN_HOOK = new Thread(this::shutdown);
 
-    private final URLClassLoader classLoader;
+    private final SourceClassLoader classLoader;
 
     private final File workingDirectory = WorkingDirectory.get("DesktopModules");
 
@@ -42,7 +42,7 @@ public class DesktopModules {
      * @param classLoader Class loader to use for the addons
      * @throws Exception exception during initialization of the class
      */
-    public DesktopModules(URLClassLoader classLoader) throws Exception {
+    public DesktopModules(SourceClassLoader classLoader) throws Exception {
         this.classLoader = classLoader;
 
         // Add system tray
@@ -146,7 +146,7 @@ public class DesktopModules {
         return sourceLoader;
     }
 
-    public URLClassLoader getClassLoader() {
+    public SourceClassLoader getClassLoader() {
         return classLoader;
     }
 

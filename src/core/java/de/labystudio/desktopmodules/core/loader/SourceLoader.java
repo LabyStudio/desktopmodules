@@ -13,11 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -43,8 +39,6 @@ public class SourceLoader {
 
     private final File addonsDirectory;
 
-    private final Method addURL;
-
     /**
      * Create a source loader instance at the given directory
      *
@@ -59,10 +53,6 @@ public class SourceLoader {
         if (!this.addonsDirectory.exists()) {
             this.addonsDirectory.mkdir();
         }
-
-        // Get add URL method to add files to the class loader
-        this.addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-        this.addURL.setAccessible(true);
     }
 
     /**
@@ -186,8 +176,8 @@ public class SourceLoader {
      *
      * @param file Jar file to add
      */
-    private void addFileToClassPath(File file) throws MalformedURLException, InvocationTargetException, IllegalAccessException {
-        this.addURL.invoke(this.desktopModules.getClassLoader(), file.toURI().toURL());
+    private void addFileToClassPath(File file) throws MalformedURLException {
+        this.desktopModules.getClassLoader().addURL(file.toURI().toURL());
     }
 
     /**
