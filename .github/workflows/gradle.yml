@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
     - uses: actions/checkout@v2
@@ -26,3 +29,11 @@ jobs:
       with:
         name: Artifacts
         path: build/libs/*.jar
+    - uses: actions/delete-package-versions@v1
+      with:
+        package-name: 'de.labystudio.desktopmodules-core'
+    - name: Publish to GitHub Packages
+      run: gradle publish
+      env:
+        USERNAME: ${{ github.actor }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,9 +1,10 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'maven-publish'
 }
 
-group 'de.labystudio'
+group 'com.github.LabyStudio'
 version '2.5.2'
 
 compileJava {
@@ -54,4 +55,22 @@ task packageSources(type: Jar, dependsOn: 'classes') {
 artifacts {
     archives packageJavadoc
     archives packageSources
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/LabyStudio/DesktopModules")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
