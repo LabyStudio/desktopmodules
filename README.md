@@ -11,9 +11,12 @@ The modules are displayed over all your programs and games and are freely movabl
 *Feel free to add your addons!*
 
 ## Installation
-1. Download the latest jar file [here](https://github.com/LabyStudio/desktopmodules/releases/).
-2. Place your addon jars in the following directory: ``C:/Users/<name>/AppData/Roaming/DesktopModules/addons/``
-3. Run ``desktopmodules-core.jar`` with java
+1. Download the latest executable file [here](https://github.com/LabyStudio/desktopmodules/releases/).
+2. Execute the ``DesktopModules.exe``
+3. Right-click the DesktopModules tray icon in your task bar and click on ``Open addons directory``
+4. Place your [addon jars](#available-addons) in the opened directory (``C:/Users/<name>/AppData/Roaming/DesktopModules/addons/``)
+5. Close the DesktopModules application. (Right-click the tray icon -> ``Exit``)
+6. Execute the ``DesktopModules.exe`` again to load all addons
 
 ## Settings
 You can left-click on the tray icon to manage your installed addons.<br>
@@ -30,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.LabyStudio:desktopmodules:2.5.3'
+    implementation 'com.github.LabyStudio:desktopmodules:2.5.3:all'
 }
 ```
 

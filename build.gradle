@@ -1,7 +1,8 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'edu.sc.seis.launch4j' version '2.5.0'
 }
 
 group 'com.github.LabyStudio'
@@ -32,6 +33,14 @@ sourceSets {
             srcDir 'src/sample/resources'
         }
     }
+}
+
+launch4j {
+    mainClassName = 'Start'
+    icon = "${projectDir}/icons/icon.ico"
+    outfile = 'DesktopModules.exe'
+    copyConfigurable = []
+    jarTask = project.tasks.shadowJar
 }
 
 jar {
