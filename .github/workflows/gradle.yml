@@ -31,7 +31,7 @@ jobs:
         path: build/libs/*.jar
     - uses: actions/delete-package-versions@v1
       with:
-        package-name: 'de.labystudio.desktopmodules-core'
+        package-name: 'com.github.LabyStudio.desktopmodules-core'
     - name: Publish to GitHub Packages
       run: gradle publish
       env:
