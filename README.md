@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.LabyStudio:desktopmodules:2.5'
+    implementation 'com.github.LabyStudio:desktopmodules:2.5.2'
 }
 ```
 
