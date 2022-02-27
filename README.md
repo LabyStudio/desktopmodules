@@ -1,22 +1,25 @@
 # DesktopModules
-DesktopModules is an application that allows you to create overlays for your operating system.
+DesktopModules is an application that allows you to create overlays for your operating system.<br>
 The modules are displayed over all your programs and games and are freely movable.
 
 ![preview](.github/assets/preview.png)
 
 ## Available Addons
-- [Spotify](https://github.com/LabyStudio/spotify-addon)
+- [Spotify](https://github.com/LabyStudio/spotify-addon) (Current playing song, cover and lyrics)
 - [SmartHome](https://github.com/LabyStudio/smarthome-addon) (FritzBox client list and IP-Camera feed)
+- [Phasmophobia](https://github.com/LabyStudio/phasmo-addon) (Evidence selector)
+- [Crypto](https://github.com/LabyStudio/crypto-addon) (Bitcoin live ticker)
 
 *Feel free to add your addons!*
 
 ## Installation
-1. Download the latest executable file [here](https://github.com/LabyStudio/desktopmodules/releases/).
-2. Execute the ``DesktopModules.exe``
-3. Right-click the DesktopModules tray icon in your task bar and click on ``Open addons directory``
-4. Place your [addon jars](#available-addons) in the opened directory (``C:/Users/<name>/AppData/Roaming/DesktopModules/addons/``)
-5. Close the DesktopModules application. (Right-click the tray icon -> ``Exit``)
-6. Execute the ``DesktopModules.exe`` again to load all addons
+1. Make sure you have Java 16 installed.
+2. Download the latest executable file [here](https://github.com/LabyStudio/desktopmodules/releases/).
+3. Execute the ``DesktopModules.exe``
+4. Right-click the DesktopModules tray icon in your task bar and click on ``Open addons directory``
+5. Place your [addon jars](#available-addons) in the opened directory (``C:/Users/<name>/AppData/Roaming/DesktopModules/addons/``)
+6. Close the DesktopModules application. (Right-click the tray icon -> ``Exit``)
+7. Execute the ``DesktopModules.exe`` again to load all addons
 
 ## Settings
 You can left-click on the tray icon to manage your installed addons.<br>
