@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.github.LabyStudio'
-version '2.5.3'
+version '2.5.4'
 
 compileJava {
     sourceCompatibility = '1.8'

@@ -276,6 +276,15 @@ public abstract class Module<T extends Addon> implements IRenderCallback {
     public abstract String getDisplayName();
 
     /**
+     * Is the module currently dragged by the mouse
+     *
+     * @return module is currently dragged
+     */
+    public boolean isDragging() {
+        return this.dragging;
+    }
+
+    /**
      * Is mouse over a rendered part of the module
      *
      * @return Mouse is over the module
