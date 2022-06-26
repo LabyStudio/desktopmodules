@@ -9,6 +9,7 @@ The modules are displayed over all your programs and games and are freely movabl
 - [SmartHome](https://github.com/LabyStudio/smarthome-addon) (FritzBox client list and IP-Camera feed)
 - [Phasmophobia](https://github.com/LabyStudio/phasmo-addon) (Evidence selector)
 - [Crypto](https://github.com/LabyStudio/crypto-addon) (Bitcoin live ticker)
+- [Piano](https://github.com/LabyStudio/piano-addon) (MIDI device display)
 
 *Feel free to add your addons!*
 
