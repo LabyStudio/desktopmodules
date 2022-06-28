@@ -2,13 +2,10 @@ package de.labystudio.desktopmodules.core.renderer.swing;
 
 import de.labystudio.desktopmodules.core.module.render.IModuleRenderer;
 import de.labystudio.desktopmodules.core.module.render.IRenderCallback;
-import de.labystudio.desktopmodules.core.renderer.IRenderContext;
 import de.labystudio.desktopmodules.core.renderer.IScreenBounds;
 
 import javax.swing.JDialog;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -29,7 +26,7 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
     protected final int width;
     protected final int height;
 
-    protected final IRenderContext renderContext = new SwingRenderContext();
+    private final SwingCanvasRender canvas;
     private final IRenderCallback renderCallback;
 
     private long lastToFontCall = -1L;
@@ -50,46 +47,37 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
         this.width = width;
         this.height = height;
 
+        // Canvas
+        this.setContentPane(this.canvas = new SwingCanvasRender(this));
+
         // Init
-        setSize(width, height);
-        setUndecorated(true);
-        setResizable(false);
+        this.setSize(width, height);
+        this.setUndecorated(true);
+        this.setResizable(false);
 
         // Overlay
-        setType(Type.UTILITY);
-        setBackground(new Color(255, 255, 255, 0));
-        setAlwaysOnTop(true);
-        setFocusableWindowState(false);
-        setAutoRequestFocus(false);
+        this.setType(Type.UTILITY);
+        this.setBackground(new Color(255, 255, 255, 0));
+        this.setAlwaysOnTop(true);
+        this.setFocusableWindowState(false);
+        this.setAutoRequestFocus(false);
 
         // Show
-        toFront();
+        this.toFront();
 
         // Listener
-        addMouseListener(this);
-        addMouseMotionListener(this);
-        addMouseWheelListener(this);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        // Update graphics instance
-        ((SwingRenderContext) this.renderContext).updateGraphics((Graphics2D) g);
-
-        // Call render callback
-        this.renderCallback.onRender(this.renderContext, this.width, this.height, this.mouseX, this.mouseY);
-        this.renderCallback.onRender(this.renderContext, this.width, this.height);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
+        this.addMouseWheelListener(this);
     }
 
     @Override
     public void requestFrame() {
-        repaint();
+        this.canvas.repaint();
 
         // Make visible
-        if (!isVisible()) {
-            setVisible(true);
+        if (!this.isVisible()) {
+            this.setVisible(true);
         }
 
         // The window will no longer be on top of you click on the taskbar
@@ -97,7 +85,7 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
             this.lastToFontCall = System.currentTimeMillis();
 
             // Keep it over the taskbar
-            toFront();
+            this.toFront();
         }
     }
 
@@ -106,7 +94,9 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
         super.setLocation(x, y);
 
         // Repaint on position change
-        repaint();
+        if (this.canvas != null) {
+            this.canvas.repaint();
+        }
     }
 
     @Override
@@ -116,7 +106,7 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
 
     @Override
     public IScreenBounds getScreenBoundsOfTargetMonitor() {
-        return new SwingScreenBounds(getX() + getWidth() / 2, getY());
+        return new SwingScreenBounds(this.getX() + this.getWidth() / 2, this.getY());
     }
 
     @Override
@@ -167,5 +157,17 @@ public class SwingModuleRenderer extends JDialog implements IModuleRenderer,
     public void mouseMoved(MouseEvent event) {
         this.mouseX = event.getX();
         this.mouseY = event.getY();
+    }
+
+    public IRenderCallback getRenderCallback() {
+        return this.renderCallback;
+    }
+
+    public int getMouseX() {
+        return this.mouseX;
+    }
+
+    public int getMouseY() {
+        return this.mouseY;
     }
 }
