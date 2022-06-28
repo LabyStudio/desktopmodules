@@ -1,9 +1,9 @@
-package de.labystudio.desktopmodules.sample;
+package de.labystudio.desktopmodules.demo;
 
 import de.labystudio.desktopmodules.core.addon.Addon;
-import de.labystudio.desktopmodules.sample.modules.SampleModule;
+import de.labystudio.desktopmodules.demo.modules.DemoModule;
 
-public class SampleAddon extends Addon {
+public class DemoAddon extends Addon {
 
     @Override
     public void onInitialize() throws Exception {
@@ -18,16 +18,16 @@ public class SampleAddon extends Addon {
         String startupMessage = getConfigValue(this.config, "startup_message", "Hello World!");
         System.out.println(startupMessage);
 
-        registerModule(SampleModule.class);
+        this.registerModule(DemoModule.class);
     }
 
     @Override
     public void onEnable() throws Exception {
-        System.out.println("Sample addon enabled!");
+        System.out.println("Demo addon enabled!");
     }
 
     @Override
     public void onDisable() {
-        System.out.println("Sample addon disabled!");
+        System.out.println("Demo addon disabled!");
     }
 }

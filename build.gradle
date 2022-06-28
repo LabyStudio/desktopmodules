@@ -25,12 +25,12 @@ sourceSets {
     main {
         java {
             srcDir 'src/core/java'
-            srcDir 'src/sample/java'
+            srcDir 'src/demo/java'
         }
 
         resources {
             srcDir 'src/core/resources'
-            srcDir 'src/sample/resources'
+            srcDir 'src/demo/resources'
         }
     }
 }

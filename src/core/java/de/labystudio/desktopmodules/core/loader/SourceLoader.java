@@ -6,7 +6,7 @@ import de.labystudio.desktopmodules.core.DesktopModules;
 import de.labystudio.desktopmodules.core.addon.Addon;
 import de.labystudio.desktopmodules.core.loader.model.ModelAddonData;
 import de.labystudio.desktopmodules.core.module.Module;
-import de.labystudio.desktopmodules.sample.SampleAddon;
+import de.labystudio.desktopmodules.demo.DemoAddon;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,10 +78,10 @@ public class SourceLoader {
             }
         }
 
-        // Load sample module if no addons are available
+        // Load demo module if no addons are available
         if (!addonsFound) {
             try {
-                registerAddon(SampleAddon.class.getName());
+                registerAddon(DemoAddon.class.getName());
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
